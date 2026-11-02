@@ -3,7 +3,7 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	MusicPlayer.play_custom_track("res://Resources/Audio/Music/Reprezent - West Coast G Funk Type Rap _ Hip-Hop Beat (320kbps).mp3")
+	MusicPlayer.play_custom_track("res://Resources/Audio/Music/Theme For Ernie (Remastered 2026) (320kbps).mp3")
 	pass
 
 
