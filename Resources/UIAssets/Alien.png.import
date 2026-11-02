@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://q0hmy4nkoto0"
-path="res://.godot/imported/icon.svg-112e72d8e552a29c74a351175c4b9e7f.ctex"
+uid="uid://brq1481fdqylt"
+path="res://.godot/imported/Alien.png-747317b456dffb9e1ec721e6896b6ae4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/Sprites/icon.svg"
-dest_files=["res://.godot/imported/icon.svg-112e72d8e552a29c74a351175c4b9e7f.ctex"]
+source_file="res://Resources/UIAssets/Alien.png"
+dest_files=["res://.godot/imported/Alien.png-747317b456dffb9e1ec721e6896b6ae4.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false
