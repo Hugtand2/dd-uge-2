@@ -1,2 +1,2 @@
 # dd-uge-2
-Andet DDU projekt
+Undulaternes DDU projekt 2
