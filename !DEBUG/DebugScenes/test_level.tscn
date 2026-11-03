@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b5jnqx82edj50"]
+
+[ext_resource type="Script" uid="uid://dnruhlktnpuqe" path="res://!DEBUG/DebugScenes/test_level.gd" id="1_g5ly6"]
+[ext_resource type="PackedScene" uid="uid://jgva0pjpv0ps" path="res://Scenes/GameObjects/desk/desk.tscn" id="1_jtgxo"]
+
+[node name="TestLevel" type="Node2D" unique_id=738664784]
+script = ExtResource("1_g5ly6")
+
+[node name="Desk" parent="." unique_id=914102673 instance=ExtResource("1_jtgxo")]
