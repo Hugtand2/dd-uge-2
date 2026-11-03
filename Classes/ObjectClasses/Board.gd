@@ -27,7 +27,7 @@ func _input(event: InputEvent) -> void:
 			if _contains_point(mouse):
 				dragging = true
 				last_mouse = mouse
-				unclip_below()
+				lift()
 				bring_to_front()
 				get_viewport().set_input_as_handled()
 			else:
@@ -63,10 +63,33 @@ func unclip(other: Board) -> void:
 	clipped.erase(other)
 	other.clipped.erase(self)
 
-func unclip_below() -> void:
-	for other in clipped.duplicate():          # copy, since unclip() edits the array
-		if other.get_index() < get_index():
-			unclip(other)
+func lift() -> void:
+	var my_index := get_index()
+	var group := get_group()
+
+	# Boards above (or equal to) me, reachable from me through overlapping rects.
+	var carried: Array[Board] = [self]
+	var stack: Array[Board] = [self]
+	while not stack.is_empty():
+		var current: Board = stack.pop_back()
+		for b in group:
+			if b in carried or b.get_index() < my_index:
+				continue
+			if current.get_global_rect().intersects(b.get_global_rect()):
+				carried.append(b)
+				stack.append(b)
+
+	# Cut every link between carried boards and everything else.
+	for a in carried:
+		for other in a.clipped.duplicate():
+			if other not in carried:
+				a.unclip(other)
+
+	# Link carried boards that really touch each other.
+	for a in carried:
+		for b in carried:
+			if a != b and a.get_global_rect().intersects(b.get_global_rect()):
+				a.clip(b)
 
 func get_group() -> Array[Board]:
 	var seen: Array[Board] = [self]
