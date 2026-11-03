@@ -18,6 +18,7 @@ config/icon="uid://brq1481fdqylt"
 [autoload]
 
 MusicPlayer="*uid://cedj0ccwfh1bx"
+DialogueBox="*uid://c5bfgciv7shja"
 
 [display]
 
@@ -31,7 +32,7 @@ folder_colors={
 "res://Classes/": "orange",
 "res://Resources/": "pink",
 "res://Resources/Audio/": "pink",
-"res://Scenes/main/": "blue",
+"res://Scenes/main/": "purple",
 "res://Setup/": "teal",
 "res://addons/": "gray"
 }

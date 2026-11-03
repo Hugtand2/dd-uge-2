@@ -8,9 +8,3 @@ func _ready() -> void:
 	
 	for b in amount:
 		add_child(Board.new("res://Resources/UIAssets/Alien.png"))
-	
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass

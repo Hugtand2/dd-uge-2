@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://c5bfgciv7shja"]
+
+[ext_resource type="Script" uid="uid://kyl1g2qmq71r" path="res://Scenes/UIScenes/dialogue_box/dialogue_box.gd" id="1_ctcqa"]
+
+[node name="DialogueBox" type="CanvasLayer" unique_id=1839984501]
+script = ExtResource("1_ctcqa")
+
+[node name="Panel" type="Panel" parent="." unique_id=834706146]
+offset_left = 45.0
+offset_top = 441.0
+offset_right = 1107.0
+offset_bottom = 623.0
+
+[node name="NameLabel" type="Label" parent="Panel" unique_id=1981406633]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 11.0
+offset_right = 124.0
+offset_bottom = 60.0
+
+[node name="TextLabel" type="Label" parent="Panel" unique_id=898365281]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 51.0
+offset_right = 365.0
+offset_bottom = 150.0
