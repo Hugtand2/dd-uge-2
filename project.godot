@@ -32,7 +32,7 @@ folder_colors={
 "res://Classes/": "orange",
 "res://Resources/": "pink",
 "res://Resources/Audio/": "pink",
-"res://Scenes/main/": "purple",
+"res://Scenes&Scripts/main/": "purple",
 "res://Setup/": "teal"
 }
 
