@@ -33,8 +33,7 @@ folder_colors={
 "res://Resources/": "pink",
 "res://Resources/Audio/": "pink",
 "res://Scenes/main/": "purple",
-"res://Setup/": "teal",
-"res://addons/": "gray"
+"res://Setup/": "teal"
 }
 
 [input]
