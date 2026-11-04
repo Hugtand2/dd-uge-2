@@ -1,5 +1,3 @@
-George
-res://Resources/UIAssets/Alien.png
 [DIALOGUE]
 First line
 Second line

@@ -2,7 +2,7 @@ class_name Customer
 extends Node2D
 
 var sprite: Sprite2D
-var data: PackedStringArray
+var data: CustomerData
 var lines: PackedStringArray = []
 
 func _init(new_name: String, sprite_path: String = "") -> void:
@@ -11,7 +11,7 @@ func _init(new_name: String, sprite_path: String = "") -> void:
 		"res://Resources/Customers/"+new_name+"/"+new_name.to_lower()+"_data.txt",
 		FileAccess.READ
 		)
-	data = file.get_as_text().split("\n")
+	data = CustomerData.new(file.get_as_text().split("\n"))
 	sprite = Sprite2D.new()
 	if sprite_path != "":
 		sprite.texture = load(sprite_path)
