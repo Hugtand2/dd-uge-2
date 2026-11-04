@@ -1,27 +1,20 @@
-extends AudioStreamPlayer
+extends Node
 # Autoload
 
-@onready var music_player: AudioStreamPlayer = self
+@onready var music_player: AudioStreamPlayer = $MusicPlayer
+@onready var sfx_player: AudioStreamPlayer = $SoundEffectPlayer
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	return
+func play_sound_effect(file_path: String) -> void:
+	var sound := load(file_path) as AudioStream
+	if sound == null:
+		push_error("Could not load sound: " + file_path)
+		return
+	sfx_player.stream = sound
+	sfx_player.play()
 
-var current_track = ""
+# Forward the music functions so everything goes through one name
+func play_custom_track(file_path: String) -> void:
+	music_player.play_custom_track(file_path)
 
 func stop_music() -> void:
-	current_track = ""
-	stop()
-
-func play_custom_track(file_path: String) -> void:
-	# Checks if track is already playing
-	if current_track == file_path and playing:
-		return
-	current_track = file_path
-	
-	# Changes track
-	stream = load(file_path)
-	if stream:
-		stream.loop = true
-		self.stream = stream
-		play()
+	music_player.stop_music()

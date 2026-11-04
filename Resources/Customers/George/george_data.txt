@@ -1,3 +1,10 @@
 [DIALOGUE]
 First line
 Second line
+
+[GREETINGS]
+Heya!
+Hi! Do you work here?
+Oh, hello
+Hey, I'm George, what's your name?
+Nice to meet you! Name's George

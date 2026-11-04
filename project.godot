@@ -17,7 +17,7 @@ config/icon="uid://brq1481fdqylt"
 
 [autoload]
 
-MusicPlayer="*uid://cedj0ccwfh1bx"
+AudioPlayer="*uid://cedj0ccwfh1bx"
 DialogueBox="*uid://c5bfgciv7shja"
 
 [display]

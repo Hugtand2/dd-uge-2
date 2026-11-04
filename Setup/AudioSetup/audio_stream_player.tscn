@@ -1,6 +1,12 @@
 [gd_scene format=3 uid="uid://cedj0ccwfh1bx"]
 
-[ext_resource type="Script" uid="uid://khfhhg5so7d6" path="res://Setup/AudioSetup/audio_stream_player.gd" id="1_e2cgn"]
+[ext_resource type="Script" uid="uid://qwvepthud00i" path="res://Setup/AudioSetup/audio_stream_player.gd" id="1_e2cgn"]
+[ext_resource type="Script" uid="uid://khfhhg5so7d6" path="res://Setup/AudioSetup/music_player.gd" id="2_iq33y"]
 
-[node name="MusicPlayer" type="AudioStreamPlayer" unique_id=2026208481]
+[node name="AudioPlayer" type="AudioStreamPlayer" unique_id=1142239070]
 script = ExtResource("1_e2cgn")
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=2026208481]
+script = ExtResource("2_iq33y")
+
+[node name="SoundEffectPlayer" type="AudioStreamPlayer" parent="." unique_id=1410585934]
