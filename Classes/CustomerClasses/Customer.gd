@@ -43,3 +43,14 @@ func greet() -> void:
 	if greetings.is_empty():
 		return
 	DialogueText.start(name, PackedStringArray([greetings[randi() % greetings.size()]]))
+
+func _input(event: InputEvent) -> void:
+	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT
+		and _contains_mouse()):
+			get_viewport().set_input_as_handled()
+			speak()
+
+func _contains_mouse() -> bool:
+	if sprite == null or sprite.texture == null:
+		return false
+	return sprite.get_rect().has_point(sprite.to_local(get_global_mouse_position()))
