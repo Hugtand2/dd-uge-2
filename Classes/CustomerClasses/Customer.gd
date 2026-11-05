@@ -31,6 +31,8 @@ func want_to_speak() -> void:
 	text_bubble_dots.scale = Vector2(0.1,0.1)
 	text_bubble_dots.position = Vector2(50,-150)
 	add_child(text_bubble_dots)
+	
+	greet()
 	return
 
 func speak() -> void:
@@ -40,4 +42,4 @@ func greet() -> void:
 	var greetings := customer_data.read_section("[GREETINGS]")
 	if greetings.is_empty():
 		return
-	DialogueBox.start(name, PackedStringArray([greetings[randi() % greetings.size()]]))
+	DialogueText.start(name, PackedStringArray([greetings[randi() % greetings.size()]]))

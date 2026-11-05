@@ -1,22 +1,27 @@
+class_name Dialogue
 extends CanvasLayer
 
-@onready var name_label: Label = $Panel/NameLabel
-@onready var text_label: Label = $Panel/TextLabel
+@onready var text_label: Label = %TextLabel   # every dialogue scene needs a Label named TextLabel
 
+var speaker := ""
 var lines: PackedStringArray = []
 var index := 0
 
 func _ready() -> void:
 	hide()
 
-func start(speaker: String, new_lines: PackedStringArray) -> void:
+func start(new_speaker: String, new_lines: PackedStringArray) -> void:
 	if new_lines.is_empty():
 		return
+	speaker = new_speaker
 	lines = new_lines
 	index = 0
-	name_label.text = speaker
-	text_label.text = lines[0]
+	_refresh()
 	show()
+
+# Children override this to update extra UI (name label, portrait, ...)
+func _refresh() -> void:
+	text_label.text = lines[index]
 
 func _input(event: InputEvent) -> void:
 	if not visible:
@@ -27,7 +32,6 @@ func _input(event: InputEvent) -> void:
 		advance = true
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		advance = true
-
 	if not advance:
 		return
 
@@ -36,4 +40,4 @@ func _input(event: InputEvent) -> void:
 	if index >= lines.size():
 		hide()
 	else:
-		text_label.text = lines[index]
+		_refresh()
