@@ -1,3 +1,9 @@
 [DIALOGUE]
 First line
 Second line
+
+[GREETINGS]
+God dag
+Hvad er skatterenten mån på en guldbar..?
+Lav min skat
+Arbjeder du her, eller ligner bare en, der gør?

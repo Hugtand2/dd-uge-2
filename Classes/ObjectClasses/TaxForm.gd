@@ -1,12 +1,9 @@
-@abstract class_name TaxForm
+class_name TaxForm
 extends Board
 
-# Navn af TaxForm
-@abstract func get_form_title() -> String
+var label_arr: Array[Label]
+var total_tax: TextEdit
 
-# Return forskel mellem korrekt skat og angivet skat (Aka fejl)
-@abstract func validate() -> float
-
-func _ready() -> void:
-	super()
-	
+func _init(new_label_arr: Array[Label]) -> void:
+	label_arr = new_label_arr
+	return

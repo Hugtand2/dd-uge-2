@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b5jnqx82edj50"]
 
 [ext_resource type="Script" uid="uid://dnruhlktnpuqe" path="res://!DEBUG/DebugScenes/test_boards/test_boards.gd" id="1_acmpc"]
-[ext_resource type="PackedScene" uid="uid://jgva0pjpv0ps" path="res://Scenes/GameObjects/desk/desk.tscn" id="2_r866x"]
+[ext_resource type="PackedScene" uid="uid://jgva0pjpv0ps" path="res://Scenes&Scripts/GameObjects/desk/desk.tscn" id="2_r866x"]
 
 [node name="TestLevel" type="Node2D" unique_id=738664784]
 script = ExtResource("1_acmpc")

@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bwikx6f55bkpf"]
+
+[ext_resource type="Script" uid="uid://bgsc6go5r4nep" path="res://Scenes&Scripts/work_place/work_place.gd" id="1_nsi5y"]
+[ext_resource type="PackedScene" uid="uid://jgva0pjpv0ps" path="res://Scenes&Scripts/GameObjects/desk/desk.tscn" id="2_tug3r"]
+[ext_resource type="Texture2D" uid="uid://catdmr57c2l5c" path="res://Resources/Sprites/GameObjectSprites/bell.png" id="3_tug3r"]
+[ext_resource type="Script" uid="uid://c4j6svabuvf70" path="res://Scenes&Scripts/GameObjects/bell/bell.gd" id="3_xrtsr"]
+
+[sub_resource type="Gradient" id="Gradient_6c7u1"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_v1nc2"]
+gradient = SubResource("Gradient_6c7u1")
+
+[node name="WorkPlace" type="Node2D" unique_id=1718905792]
+script = ExtResource("1_nsi5y")
+
+[node name="Desk" parent="." unique_id=914102673 instance=ExtResource("2_tug3r")]
+
+[node name="Bell" type="TextureButton" parent="." unique_id=247982987]
+offset_left = 736.0
+offset_top = 415.0
+offset_right = 801.0
+offset_bottom = 483.0
+texture_normal = ExtResource("3_tug3r")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_xrtsr")
+
+[node name="Frame" type="Node2D" parent="." unique_id=364179705]
+
+[node name="Sprite2D1" type="Sprite2D" parent="Frame" unique_id=237228833]
+position = Vector2(160.125, 322.625)
+scale = Vector2(4.9960938, 10.167969)
+texture = SubResource("GradientTexture2D_v1nc2")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Frame" unique_id=623859005]
+position = Vector2(569, 569)
+scale = Vector2(7.9980474, 2.6621094)
+texture = SubResource("GradientTexture2D_v1nc2")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Frame" unique_id=85458382]
+position = Vector2(984.3086, 324)
+scale = Vector2(5.2908945, 10.334437)
+texture = SubResource("GradientTexture2D_v1nc2")
