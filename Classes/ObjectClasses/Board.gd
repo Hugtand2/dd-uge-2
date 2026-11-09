@@ -9,13 +9,18 @@ var last_mouse := Vector2.ZERO
 var sprite: Sprite2D
 
 # Constructor
-func _init(sprite_path: String) -> void:
+func _init(sprite_path: String, sprite_scale: float) -> void:
 	if sprite_path != "":
 		sprite = Sprite2D.new()
 		sprite.texture = load(sprite_path)
 		sprite.centered = false
 		add_child(sprite)
-		size = sprite.texture.get_size()
+		# Ændr sprite.scale og size for at ændre på størrelsen af boards
+		# Sæt til 1.0 hvis du ikke vil ændre den
+		size = sprite.texture.get_size()*sprite_scale
+		sprite.scale *= sprite_scale
+	else:
+		print("Sprite path not found")
 
 func _ready() -> void:
 	add_to_group("boards")

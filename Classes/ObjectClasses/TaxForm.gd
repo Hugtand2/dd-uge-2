@@ -1,9 +1,13 @@
-class_name TaxForm
+@abstract class_name TaxForm
 extends Board
 
-var label_arr: Array[Label]
-var total_tax: TextEdit
 
-func _init(new_label_arr: Array[Label]) -> void:
-	label_arr = new_label_arr
-	return
+# Abstrakt klasse: lav aldrig TaxForm.new() direkte.
+# Hver rigtig blanket (fx A_Indkomst) arver herfra, laver sin egen _init()
+# og kalder super("<sti til blankettens billede>").
+
+# Blankettens titel, fx "A-indkomst"
+@abstract func get_form_title() -> String
+
+# Return forskel mellem korrekt skat og angivet skat (Aka fejl)
+@abstract func validate() -> float
