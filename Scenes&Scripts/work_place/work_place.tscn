@@ -20,6 +20,7 @@ offset_left = 736.0
 offset_top = 415.0
 offset_right = 801.0
 offset_bottom = 483.0
+focus_mode = 0
 texture_normal = ExtResource("3_tug3r")
 ignore_texture_size = true
 stretch_mode = 5

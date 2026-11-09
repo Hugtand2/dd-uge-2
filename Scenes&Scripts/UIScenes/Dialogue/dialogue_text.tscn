@@ -4,6 +4,7 @@
 
 [node name="DialogueText" type="CanvasLayer" unique_id=155069367]
 script = ExtResource("1_e1t3f")
+close_on_any_input = true
 
 [node name="TextLabel" type="Label" parent="." unique_id=655171898]
 unique_name_in_owner = true
