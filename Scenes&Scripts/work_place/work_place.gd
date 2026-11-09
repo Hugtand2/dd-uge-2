@@ -25,4 +25,4 @@ func customer_arrive() -> void:
 	return
 
 func _on_customer_finished_speaking() -> void:
-	desk.spawn_board("res://Resources/Sprites/GameObjectSprites/tax_paper_test.jpg", Vector2.ZERO, 0.1)
+	desk.spawn_board("res://Resources/Sprites/GameObjectSprites/tax_paper_test.jpg", Vector2.ZERO, 0.05, "res://Resources/Sprites/GameObjectSprites/bell.png")

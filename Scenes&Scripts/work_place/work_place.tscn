@@ -16,9 +16,6 @@ script = ExtResource("1_nsi5y")
 [node name="Desk" parent="." unique_id=130957007 instance=ExtResource("2_tug3r")]
 position = Vector2(571, 543)
 
-[node name="Desk" parent="Desk" unique_id=579528430 instance=ExtResource("2_tug3r")]
-position = Vector2(571, 543)
-
 [node name="Bell" type="TextureButton" parent="." unique_id=247982987]
 offset_left = 736.0
 offset_top = 415.0
@@ -32,12 +29,12 @@ script = ExtResource("3_xrtsr")
 
 [node name="Frame" type="Node2D" parent="." unique_id=364179705]
 
-[node name="Sprite2D1" type="Sprite2D" parent="Frame" unique_id=237228833]
+[node name="LeftWall" type="Sprite2D" parent="Frame" unique_id=237228833]
 position = Vector2(160.125, 322.625)
 scale = Vector2(4.9960938, 10.167969)
 texture = SubResource("GradientTexture2D_v1nc2")
 
-[node name="Sprite2D2" type="Sprite2D" parent="Frame" unique_id=85458382]
+[node name="RightWall" type="Sprite2D" parent="Frame" unique_id=85458382]
 position = Vector2(984.3086, 324)
 scale = Vector2(5.2908945, 10.334437)
 texture = SubResource("GradientTexture2D_v1nc2")
