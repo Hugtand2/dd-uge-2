@@ -2,6 +2,7 @@ class_name Dialogue
 extends CanvasLayer
 
 @onready var text_label: Label = %TextLabel   # every dialogue scene needs a Label named TextLabel
+@export var close_on_any_input := false
 
 var speaker := ""
 var lines: PackedStringArray = []
@@ -26,7 +27,14 @@ func _refresh() -> void:
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return
-
+	
+	if close_on_any_input:
+		var is_press := event.is_pressed() and not event.is_echo() \
+			and (event is InputEventKey or event is InputEventMouseButton)
+		if is_press:
+			hide()
+		return
+	
 	var advance := false
 	if event.is_action_pressed("ui_accept"):
 		advance = true
@@ -34,7 +42,7 @@ func _input(event: InputEvent) -> void:
 		advance = true
 	if not advance:
 		return
-
+	
 	get_viewport().set_input_as_handled()
 	index += 1
 	if index >= lines.size():

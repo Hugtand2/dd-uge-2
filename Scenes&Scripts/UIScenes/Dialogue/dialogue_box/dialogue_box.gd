@@ -1,5 +1,4 @@
 extends Dialogue
-
 @onready var name_label: Label = %NameLabel
 
 func _refresh() -> void:

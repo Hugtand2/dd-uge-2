@@ -44,7 +44,7 @@ func greet() -> void:
 		return
 	DialogueText.start(name, PackedStringArray([greetings[randi() % greetings.size()]]))
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT
 		and _contains_mouse()):
 			get_viewport().set_input_as_handled()
