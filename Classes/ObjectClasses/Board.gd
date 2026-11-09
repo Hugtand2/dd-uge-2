@@ -29,7 +29,13 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			var mouse := get_global_mouse_position()
+			if _contains_point(mouse) and _is_over_control(mouse):
+				# Lad klikket gå videre til input-feltet (fx LineEdit på en blanket)
+				dragging = false
+				bring_to_front()
+				return
 			if _contains_point(mouse):
+				get_viewport().gui_release_focus()
 				dragging = true
 				last_mouse = mouse
 				lift()
@@ -57,6 +63,15 @@ func bring_to_front() -> void:
 
 func _contains_point(global_point: Vector2) -> bool:
 	return Rect2(Vector2.ZERO, size).has_point(to_local(global_point))
+
+# Er punktet over en Control (fx et input-felt), der selv skal have musen?
+func _is_over_control(global_point: Vector2) -> bool:
+	for node in find_children("*", "Control", true, false):
+		var c := node as Control
+		if c.is_visible_in_tree() and c.mouse_filter != Control.MOUSE_FILTER_IGNORE \
+				and c.get_global_rect().has_point(global_point):
+			return true
+	return false
 
 func clip(other: Board) -> void:
 	if other == self or other in clipped:
