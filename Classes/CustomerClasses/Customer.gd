@@ -1,11 +1,22 @@
 class_name Customer
 extends Node2D
 
+signal finished_speaking
+
+const CUSTOMERS_DIR := "res://Resources/Customers/"
+
+@onready var text_bubble_dots_resource: Resource
+@onready var text_bubble_dots: Sprite2D
+
 var sprite: Sprite2D
 var data: PackedStringArray
 var lines: PackedStringArray = []
 var customer_data: CustomerData
 
+func _ready() -> void:
+	text_bubble_dots_resource = load("res://Resources/Customers/!CustomerResources/speech-bubble-dots.webp")
+	text_bubble_dots = Sprite2D.new()
+	text_bubble_dots.hide()
 
 func _init(new_name: String, sprite_path: String = "") -> void:
 	name = new_name
@@ -25,18 +36,25 @@ func _init(new_name: String, sprite_path: String = "") -> void:
 
 func want_to_speak() -> void:
 	# Add sprite to scenetree
-	var text_bubble_dots_resource := load("res://Resources/Customers/!CustomerResources/speech-bubble-dots.webp")
-	var text_bubble_dots := Sprite2D.new()
 	text_bubble_dots.texture = text_bubble_dots_resource
 	text_bubble_dots.scale = Vector2(0.1,0.1)
 	text_bubble_dots.position = Vector2(50,-150)
 	add_child(text_bubble_dots)
+	text_bubble_dots.show()
 	
 	greet()
 	return
 
 func speak() -> void:
-	DialogueBox.start(name, customer_data.read_section("[DIALOGUE]"))
+	text_bubble_dots.hide()
+	var section := customer_data.read_section("[DIALOGUE]")
+	if section.is_empty():
+		return
+	DialogueBox.start(name, section)
+	DialogueBox.closed.connect(_on_dialogue_closed, CONNECT_ONE_SHOT)
+
+func _on_dialogue_closed() -> void:
+	finished_speaking.emit()
 
 func greet() -> void:
 	var greetings := customer_data.read_section("[GREETINGS]")
@@ -54,3 +72,18 @@ func _contains_mouse() -> bool:
 	if sprite == null or sprite.texture == null:
 		return false
 	return sprite.get_rect().has_point(sprite.to_local(get_global_mouse_position()))
+
+static func get_customer_names() -> PackedStringArray:
+	var names := PackedStringArray()
+	for dir_name in DirAccess.get_directories_at(CUSTOMERS_DIR):
+		if dir_name.begins_with("!"):
+			continue
+		names.append(dir_name)
+	return names
+
+static func get_random_customer_name() -> String:
+	var names := get_customer_names()
+	if names.is_empty():
+		push_error("No customers found in " + CUSTOMERS_DIR)
+		return ""
+	return names[randi() % names.size()]

@@ -7,6 +7,7 @@ var clipped: Array[Board] = []
 var dragging := false
 var last_mouse := Vector2.ZERO
 var sprite: Sprite2D
+var on_desk := false
 
 # Constructor
 func _init(sprite_path: String, sprite_scale: float) -> void:
@@ -43,17 +44,25 @@ func _input(event: InputEvent) -> void:
 				get_viewport().set_input_as_handled()
 			else:
 				dragging = false
+		elif dragging:
+			_drop()
 	elif event is InputEventMouseMotion and dragging:
 		if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			dragging = false
-			if get_board_under():
-				clip(get_board_under())
+			_drop()
 			return
 		var mouse := get_global_mouse_position()
 		var delta := mouse - last_mouse
 		last_mouse = mouse
 		for b in get_group():
 			b.global_position += delta
+
+func _drop() -> void:
+	dragging = false
+	var target := get_board_under()
+	if target:
+		clip(target)
+	for desk in get_tree().get_nodes_in_group("desks"):
+		desk.board_dropped(self)
 
 func bring_to_front() -> void:
 	var members := get_group()

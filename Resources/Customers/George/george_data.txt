@@ -1,10 +1,10 @@
 [DIALOGUE]
-First line
-Second line
+Dette er mit første skridt i at starte mit virksomhedsimperie fra bunden med min fars penge!
+Dog, så føler staten åbenbart, at jeg skal betale et eller andet 'skat'
+Gør det for mig, vil du ikke nok?
 
 [GREETINGS]
 God dag
 Hvad er skatterenten mån på en guldbar..?
 Lav min skat
-Arbjeder du her, eller ligner bare en, der gør?
-Dette er mit første skridt i at starte mit virksomhedsimperie fra bunden med min fars penge!
+Arbejder du her, eller ligner bare en, der gør?
