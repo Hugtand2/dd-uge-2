@@ -16,6 +16,8 @@ func _init(sprite_path: String) -> void:
 		sprite.centered = false
 		add_child(sprite)
 		size = sprite.texture.get_size()
+	else:
+		print("Sprite path not found")
 
 func _ready() -> void:
 	add_to_group("boards")

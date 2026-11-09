@@ -1,5 +1,5 @@
 class_name CustomerData
-extends Customer
+extends Node2D
 
 var string_data: PackedStringArray
 var view_index: int = 0

@@ -8,3 +8,4 @@ func _ready() -> void:
 	
 	for b in amount:
 		add_child(Board.new("res://Resources/UIAssets/Alien.png"))
+		add_child(PersonIncomeTax.new("res://Resources/UIAssets/tax_paper_test.jpg"))
