@@ -13,7 +13,6 @@ var paper_types := [
 
 func _ready() -> void:
 	money_label.text = TaxForm._kr(money)
-	pass
 
 func customer_arrive() -> void:
 	if current_customer:
@@ -32,3 +31,10 @@ func customer_arrive() -> void:
 
 func _on_customer_finished_speaking() -> void:
 	desk.place_board(paper_types.pick_random())
+
+func _on_paper_placed() -> void:
+	print("Paper placed")
+	return
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("Test"): _on_paper_placed()
