@@ -28,7 +28,7 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			var mouse := get_global_mouse_position()
+			var mouse := _event_position(event)
 			if _contains_point(mouse) and _is_over_control(mouse):
 				# Lad klikket gå videre til input-feltet (fx LineEdit på en blanket)
 				dragging = false
@@ -49,11 +49,17 @@ func _input(event: InputEvent) -> void:
 			if get_board_under():
 				clip(get_board_under())
 			return
-		var mouse := get_global_mouse_position()
+		var mouse := _event_position(event)
 		var delta := mouse - last_mouse
 		last_mouse = mouse
 		for b in get_group():
 			b.global_position += delta
+
+# Musens position i verdens-koordinater, læst fra selve eventet.
+# get_global_mouse_position() læser den rigtige cursor, så falske events
+# (fx fra TestBot i !DEBUG) ville ellers ikke kunne trække boards.
+func _event_position(event: InputEventMouse) -> Vector2:
+	return get_canvas_transform().affine_inverse() * event.position
 
 func bring_to_front() -> void:
 	var members := get_group()

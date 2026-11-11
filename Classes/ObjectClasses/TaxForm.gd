@@ -19,6 +19,7 @@ const AM_RATE := 0.08 # AM-bidrag er 8 % ved lov
 
 # Progressive skatter 2026: årlig grænse (efter AM-bidrag) og ekstra sats.
 # Den ekstra sats gælder kun for den del af indkomsten, der ligger over grænsen.
+# Det står i TaxForm, fordi den kan være relevant for flere forskellige typer skat.
 const PROGRESSIVE_BRACKETS := [
 	{"name": "Mellemskat", "limit": 641200.0,  "rate": 0.075},
 	{"name": "Topskat",    "limit": 777900.0,  "rate": 0.075},
