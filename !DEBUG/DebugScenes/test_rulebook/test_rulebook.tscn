@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://!DEBUG/DebugScenes/test_rulebook/test_rulebook.gd" id="1_rulebook"]
+
+[node name="TestRulebook" type="Node2D"]
+script = ExtResource("1_rulebook")

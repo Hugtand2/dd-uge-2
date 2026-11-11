@@ -13,8 +13,7 @@ extends Board
 # Resten (titel, svarfelt, validate, formatering) arves herfra.
 # _progressive_tax() regner mellem-, top- og toptopskat ud for blanketterne.
 	
-const FONT_SIZE := 12
-const TITLE_FONT_SIZE := 16
+# FONT_SIZE, TITLE_FONT_SIZE og _make_label() arves fra Board.
 const AM_RATE := 0.08 # AM-bidrag er 8 % ved lov
 
 # Progressive skatter 2026: årlig grænse (efter AM-bidrag) og ekstra sats.
@@ -57,15 +56,6 @@ func _build_ui() -> void:
 	answer_field.placeholder_text = "0000,00kr"
 	answer_field.add_theme_font_size_override("font_size", FONT_SIZE)
 	box.add_child(answer_field)
-
-func _make_label(text: String, font_size: int = FONT_SIZE) -> Label:
-	var label := Label.new()
-	label.text = text
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_color_override("font_color", Color.BLACK)
-	label.add_theme_font_size_override("font_size", font_size)
-	return label
 
 # Ekstra skat oven i trækprocenten (mellem-, top- og toptopskat).
 # grundlag = indkomst efter AM-bidrag, men FØR fradrag. Hovedkort-fradraget
