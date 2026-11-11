@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://be5nnr5ji5wxw"
-path="res://.godot/imported/tax_paper_test.jpg-454168d4c17ac5ea7bd6c8441a24a306.ctex"
+path="res://.godot/imported/tax_paper_test.jpg-b64b2ae184ca2414f8826b5f3bb644cc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/Sprites/GameObjectSprites/tax_paper_test.jpg"
-dest_files=["res://.godot/imported/tax_paper_test.jpg-454168d4c17ac5ea7bd6c8441a24a306.ctex"]
+source_file="res://Resources/Sprites/GameObjectSprites/TaxFormSprites/tax_paper_test.jpg"
+dest_files=["res://.godot/imported/tax_paper_test.jpg-b64b2ae184ca2414f8826b5f3bb644cc.ctex"]
 
 [params]
 

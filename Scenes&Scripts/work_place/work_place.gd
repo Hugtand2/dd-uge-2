@@ -1,12 +1,18 @@
 extends Node2D
 
 @onready var desk := $Desk
+@onready var money_label := $MoneyLabel
 
 var current_customer: Customer
 var is_serving := false
-var cash: float
+var money := 0.00
+var paper_types := [
+	A_Indkomst.new(1),
+	A_Indkomst.new(12)
+	]
 
 func _ready() -> void:
+	money_label.text = TaxForm._kr(money)
 	pass
 
 func customer_arrive() -> void:
@@ -25,4 +31,4 @@ func customer_arrive() -> void:
 	return
 
 func _on_customer_finished_speaking() -> void:
-	desk.spawn_board("res://Resources/Sprites/GameObjectSprites/tax_paper_test.jpg", Vector2.ZERO, 0.05, "res://Resources/Sprites/GameObjectSprites/bell.png")
+	desk.place_board(paper_types.pick_random())

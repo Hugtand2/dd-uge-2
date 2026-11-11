@@ -18,11 +18,15 @@ var is_icon := false
 # Constructor
 func _init(sprite_path: String, sprite_scale: float, icon_path := "", icon_scale := 0.25) -> void:
 	if sprite_path != "":
+		var tex := load(sprite_path) as Texture2D
+		if tex == null:
+			push_error("Board: could not load sprite: " + sprite_path)
+			return
 		sprite = Sprite2D.new()
-		sprite.texture = load(sprite_path)
+		sprite.texture = tex
 		sprite.centered = false
 		add_child(sprite)
-		full_size = sprite.texture.get_size()*sprite_scale
+		full_size = tex.get_size() * sprite_scale
 		sprite.scale *= sprite_scale
 		size = full_size
 	else:
@@ -38,6 +42,8 @@ func _init(sprite_path: String, sprite_scale: float, icon_path := "", icon_scale
 
 func _ready() -> void:
 	add_to_group("boards")
+	# Hides VBox, index 2 is VBox
+	get_child(2).hide()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -68,10 +74,7 @@ func _input(event: InputEvent) -> void:
 		last_mouse = mouse
 		for b in get_group():
 			b.global_position += delta
-		if is_icon and not _is_over_desk():
-			set_icon_mode(false)
-			global_position = mouse - size / 2.0   # full board centered on the cursor
-			last_mouse = mouse
+		_update_icon_mode(mouse)
 
 func _drop() -> void:
 	dragging = false
@@ -179,9 +182,24 @@ func set_icon_mode(on: bool) -> void:
 	size = icon_size if on else full_size
 	global_position = center - size / 2.0
 
-func _is_over_desk() -> bool:
-	var center := get_global_rect().get_center()
+func _update_icon_mode(mouse: Vector2) -> void:
+	if icon_sprite == null:
+		return
+	var over_desk := _is_point_over_desk(mouse)
+	if over_desk and not is_icon:
+		set_icon_mode(true)
+		get_child(2).hide()
+		global_position = mouse - size / 2.0     # icon centered on the cursor
+	elif not over_desk and is_icon:
+		set_icon_mode(false)
+		get_child(2).show()
+		global_position = mouse - size / 2.0     # full board centered on the cursor
+	else:
+		return
+	last_mouse = mouse
+
+func _is_point_over_desk(point: Vector2) -> bool:
 	for desk in get_tree().get_nodes_in_group("desks"):
-		if desk.get_global_rect().has_point(center):
+		if desk.get_global_rect().has_point(point):
 			return true
 	return false

@@ -38,3 +38,11 @@ texture = SubResource("GradientTexture2D_v1nc2")
 position = Vector2(984.3086, 324)
 scale = Vector2(5.2908945, 10.334437)
 texture = SubResource("GradientTexture2D_v1nc2")
+
+[node name="MoneyLabel" type="Label" parent="." unique_id=1569045314]
+offset_left = 832.0
+offset_top = 9.0
+offset_right = 980.0
+offset_bottom = 103.0
+theme_override_font_sizes/font_size = 45
+text = "0 kr"

@@ -23,9 +23,12 @@ func board_dropped(board: Board) -> void:
 # offset is measured from the desk's center to the new board's center
 func spawn_board(board_texture_path: String, offset: Vector2, board_scale := 1.0,
 		icon_path := "", icon_scale := 0.25) -> Board:
-	var new_board := Board.new(board_texture_path, board_scale, icon_path, icon_scale)
-	get_parent().add_child(new_board)
-	new_board.set_icon_mode(true)        # size changes here, so do it before positioning
+	return place_board(Board.new(board_texture_path, board_scale, icon_path, icon_scale), offset)
+
+func place_board(new_board: Board, offset := Vector2.ZERO) -> Board:
+	get_parent().add_child(new_board)          # same parent as other boards, so stacking works
+	if new_board.icon_sprite:                  # only boards with an icon start as one
+		new_board.set_icon_mode(true)
 	var center := get_global_rect().get_center() + offset
 	new_board.global_position = center - new_board.size / 2.0
 	new_board.on_desk = get_global_rect().has_point(center)
