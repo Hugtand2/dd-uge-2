@@ -1,6 +1,8 @@
 class_name A_Indkomst
 extends TaxForm
 
+const ICON_PATH := "res://Resources/Sprites/GameObjectSprites/TaxFormSprites/tax_paper_test.jpg"
+
 # Værdier på blanketten (pr. periode: måned eller år)
 var indkomst: float
 var traekprocent: float
@@ -12,7 +14,7 @@ var fradrag: float
 var periods: int
 
 func _init(p_periods: int = 12) -> void:
-	super("res://Resources/Sprites/GameObjectSprites/tax_paper_test.jpg", 0.1)
+	super("res://Resources/Sprites/GameObjectSprites/TaxFormSprites/tax_paper_test.jpg", 0.1, ICON_PATH, 0.025)
 	periods = p_periods
 	var months_per_period := 12.0 / periods
 

@@ -11,23 +11,43 @@ var clipped: Array[Board] = []
 var dragging := false
 var last_mouse := Vector2.ZERO
 var sprite: Sprite2D
+var on_desk := false
+
+# For icon handling (small sprite when on desk)
+var icon_sprite: Sprite2D
+var full_size := Vector2.ZERO
+var icon_size := Vector2.ZERO
+var is_icon := false
 
 # Constructor
-func _init(sprite_path: String, sprite_scale: float) -> void:
+func _init(sprite_path: String, sprite_scale: float, icon_path := "", icon_scale := 0.25) -> void:
 	if sprite_path != "":
+		var tex := load(sprite_path) as Texture2D
+		if tex == null:
+			push_error("Board: could not load sprite: " + sprite_path)
+			return
 		sprite = Sprite2D.new()
-		sprite.texture = load(sprite_path)
+		sprite.texture = tex
 		sprite.centered = false
 		add_child(sprite)
-		# Ændr sprite.scale og size for at ændre på størrelsen af boards
-		# Sæt til 1.0 hvis du ikke vil ændre den
-		size = sprite.texture.get_size()*sprite_scale
+		full_size = tex.get_size() * sprite_scale
 		sprite.scale *= sprite_scale
+		size = full_size
 	else:
 		print("Sprite path not found")
+	if icon_path != "":
+		icon_sprite = Sprite2D.new()
+		icon_sprite.texture = load(icon_path)
+		icon_sprite.centered = false
+		icon_sprite.scale *= icon_scale
+		icon_size = icon_sprite.texture.get_size() * icon_scale
+		icon_sprite.hide()
+		add_child(icon_sprite)
 
 func _ready() -> void:
 	add_to_group("boards")
+	# Hides VBox, index 2 is VBox
+	get_child(2).hide()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -42,23 +62,35 @@ func _input(event: InputEvent) -> void:
 				dragging = false
 				bring_to_front()
 				return
-			get_viewport().gui_release_focus()
-			dragging = true
-			last_mouse = mouse
-			lift()
-			bring_to_front()
-			get_viewport().set_input_as_handled()
+			if _contains_point(mouse):
+				get_viewport().gui_release_focus()
+				dragging = true
+				last_mouse = mouse
+				lift()
+				bring_to_front()
+				get_viewport().set_input_as_handled()
+			else:
+				dragging = false
+		elif dragging:
+			_drop()
 	elif event is InputEventMouseMotion and dragging:
 		if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			dragging = false
-			if get_board_under():
-				clip(get_board_under())
+			_drop()
 			return
 		var mouse := _event_position(event)
 		var delta := mouse - last_mouse
 		last_mouse = mouse
 		for b in get_group():
 			b.global_position += delta
+		_update_icon_mode(mouse)
+
+func _drop() -> void:
+	dragging = false
+	var target := get_board_under()
+	if target and not is_icon:
+		clip(target)
+	for desk in get_tree().get_nodes_in_group("desks"):
+		desk.board_dropped(self)
 
 # Musens position i verdens-koordinater, læst fra selve eventet.
 # get_global_mouse_position() læser den rigtige cursor, så falske events
@@ -203,3 +235,36 @@ func get_board_under() -> Board:
 				best_dist = d
 				best = other
 	return best
+
+func set_icon_mode(on: bool) -> void:
+	if on and icon_sprite == null:
+		return
+	var center := global_position + size / 2.0
+	is_icon = on
+	sprite.visible = not on
+	if icon_sprite:
+		icon_sprite.visible = on
+	size = icon_size if on else full_size
+	global_position = center - size / 2.0
+
+func _update_icon_mode(mouse: Vector2) -> void:
+	if icon_sprite == null:
+		return
+	var over_desk := _is_point_over_desk(mouse)
+	if over_desk and not is_icon:
+		set_icon_mode(true)
+		get_child(2).hide()
+		global_position = mouse - size / 2.0     # icon centered on the cursor
+	elif not over_desk and is_icon:
+		set_icon_mode(false)
+		get_child(2).show()
+		global_position = mouse - size / 2.0     # full board centered on the cursor
+	else:
+		return
+	last_mouse = mouse
+
+func _is_point_over_desk(point: Vector2) -> bool:
+	for desk in get_tree().get_nodes_in_group("desks"):
+		if desk.get_global_rect().has_point(point):
+			return true
+	return false

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://c68ilnrn3gf8y"]
 
-[ext_resource type="Script" uid="uid://dnruhlktnpuqe" path="res://!DEBUG/DebugScenes/test_boards/test_boards.gd" id="1_tpnqi"]
-[ext_resource type="PackedScene" uid="uid://jgva0pjpv0ps" path="res://Scenes&Scripts/GameObjects/desk/desk.tscn" id="2_0o18v"]
+[ext_resource type="Script" uid="uid://cu1yl8m2nutcw" path="res://Scenes&Scripts/main/main.gd" id="1_j2eme"]
+[ext_resource type="PackedScene" uid="uid://bwikx6f55bkpf" path="res://Scenes&Scripts/work_place/work_place.tscn" id="2_tpnqi"]
 
-[node name="TestLevel" type="Node2D" unique_id=738664784]
-script = ExtResource("1_tpnqi")
+[node name="Main" type="Node2D" unique_id=738664784]
+script = ExtResource("1_j2eme")
 
-[node name="Desk" parent="." unique_id=914102673 instance=ExtResource("2_0o18v")]
+[node name="WorkPlace" parent="." unique_id=1718905792 instance=ExtResource("2_tpnqi")]
