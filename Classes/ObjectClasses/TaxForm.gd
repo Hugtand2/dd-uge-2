@@ -11,10 +11,19 @@ extends Board
 #   get_correct_total()  -> det korrekte beløb
 #   _add_fields(box)     -> blankettens egne linjer (labels)
 # Resten (titel, svarfelt, validate, formatering) arves herfra.
-
+# _progressive_tax() regner mellem-, top- og toptopskat ud for blanketterne.
+	
 const FONT_SIZE := 12
 const TITLE_FONT_SIZE := 16
 const AM_RATE := 0.08 # AM-bidrag er 8 % ved lov
+
+# Progressive skatter 2026: årlig grænse (efter AM-bidrag) og ekstra sats.
+# Den ekstra sats gælder kun for den del af indkomsten, der ligger over grænsen.
+const PROGRESSIVE_BRACKETS := [
+	{"name": "Mellemskat", "limit": 641200.0,  "rate": 0.075},
+	{"name": "Topskat",    "limit": 777900.0,  "rate": 0.075},
+	{"name": "Toptopskat", "limit": 2592700.0, "rate": 0.05},
+]
 
 var answer_field: LineEdit
 
@@ -44,7 +53,7 @@ func _build_ui() -> void:
 	_add_fields(box)
 
 	answer_field = LineEdit.new()
-	answer_field.placeholder_text = "0,00"
+	answer_field.placeholder_text = "0000,00kr"
 	answer_field.add_theme_font_size_override("font_size", FONT_SIZE)
 	box.add_child(answer_field)
 
@@ -56,6 +65,18 @@ func _make_label(text: String, font_size: int = FONT_SIZE) -> Label:
 	label.add_theme_color_override("font_color", Color.BLACK)
 	label.add_theme_font_size_override("font_size", font_size)
 	return label
+
+# Ekstra skat oven i trækprocenten (mellem-, top- og toptopskat).
+# grundlag = indkomst efter AM-bidrag, men FØR fradrag. Hovedkort-fradraget
+# gælder kun trækprocenten, ikke mellem-, top- og toptopskat!
+# periods = 12 for månedlige blanketter (grænserne deles med 12), 1 for årlige.
+# Det her står ikke i A-SKAT alene, da den også bruges til B-SKAT.
+static func _progressive_tax(grundlag: float, periods: int = 12) -> float:
+	var total := 0.0
+	for bracket in PROGRESSIVE_BRACKETS:
+		var limit := roundf(float(bracket["limit"]) / periods)
+		total += maxf(grundlag - limit, 0.0) * float(bracket["rate"])
+	return total
 
 # Formatér beløb på dansk, fx 30.000,00 kr
 static func _kr(value: float) -> String:
