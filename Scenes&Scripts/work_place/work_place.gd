@@ -6,12 +6,13 @@ extends Node2D
 var current_customer: Customer
 var is_serving := false
 var money := 0.00
-var paper_types := [
-	A_Indkomst.new(1),
-	A_Indkomst.new(12)
-	]
+var paper_types := Weighed_Array.new()
+
 
 func _ready() -> void:
+	# Decide paper_types and probability distrubution of them
+	paper_types.add(A_Indkomst, 1.0)
+	
 	money_label.text = TaxForm._kr(money)
 
 func customer_arrive() -> void:
@@ -30,11 +31,11 @@ func customer_arrive() -> void:
 	return
 
 func _on_customer_finished_speaking() -> void:
-	desk.place_board(paper_types.pick_random())
+	desk.place_board(paper_types.pick_weighed_random().new())
 
-func _on_paper_placed() -> void:
+func _on_paper_given() -> void:
 	print("Paper placed")
 	return
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Test"): _on_paper_placed()
+	if event.is_action_pressed("Test"): _on_paper_given()

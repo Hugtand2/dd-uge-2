@@ -13,7 +13,7 @@ var fradrag: float
 # og de progressive skattegrænser deles med det samme tal.
 var periods: int
 
-func _init(p_periods: int = 12) -> void:
+func _init(p_periods: int = [1,12].pick_random()) -> void:
 	super("res://Resources/Sprites/GameObjectSprites/TaxFormSprites/tax_paper_test.jpg", 0.1, ICON_PATH, 0.025)
 	periods = p_periods
 	var months_per_period := 12.0 / periods

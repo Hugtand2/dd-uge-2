@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://de473pavbiupg"]
 
-[ext_resource type="Script" path="res://!DEBUG/DebugScenes/test_rulebook/test_rulebook.gd" id="1_rulebook"]
+[ext_resource type="Script" uid="uid://yqjh15yhlmas" path="res://!DEBUG/DebugScenes/test_rulebook/test_rulebook.gd" id="1_rulebook"]
 
-[node name="TestRulebook" type="Node2D"]
+[node name="TestRulebook" type="Node2D" unique_id=1315656855]
 script = ExtResource("1_rulebook")
