@@ -1,6 +1,3 @@
-res://Classes/ObjectClasses/Board.gd
-res://!DEBUG/DebugScenes/test_rulebook/test_rulebook.tscn
-res://Scenes&Scripts/work_place/work_place.gd
-res://Classes/DatatypeClasses/Weighed_Array.gd
-res://Classes/ObjectClasses/A_Indkomst.gd
+res://!DEBUG/DebugScenes/test_desk/test_desk.tscn
 res://Classes/CustomerClasses/Customer.gd
+res://Scenes&Scripts/work_place/work_place.gd
