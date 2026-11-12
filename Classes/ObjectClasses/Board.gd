@@ -53,13 +53,20 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			var mouse := _event_position(event)
-			if not _contains_point(mouse) or _is_covered_at(mouse):
-				# Klikket er ved siden af, eller det tilhører et board oven på os
+			var mouse := get_global_mouse_position()
+			if _contains_point(mouse) and _is_over_control(mouse):
+				# Lad klikket gå videre til input-feltet (fx LineEdit på en blanket)
 				dragging = false
+				bring_to_front()
 				return
-			if _is_over_control(mouse):
-				# Lad klikket gå videre til Control'en (fx LineEdit eller Button)
+			if _contains_point(mouse):
+				get_viewport().gui_release_focus()
+				dragging = true
+				last_mouse = mouse
+				lift()
+				bring_to_front()
+				get_viewport().set_input_as_handled()
+			else:
 				dragging = false
 		elif dragging:
 			_drop()
