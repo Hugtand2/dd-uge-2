@@ -53,7 +53,7 @@ func _open_page(page: RulebookPage) -> void:
 	# ellers ville den blive skjult sammen med bogen.
 	if page.get_parent() == null:
 		get_parent().add_child(page)
-	replace_with(page)
+	#replace_with(page)
 
 # Skjul siden og vis bogen der, hvor siden ligger nu
 func _close_page(page: RulebookPage) -> void:

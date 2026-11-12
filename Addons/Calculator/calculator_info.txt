@@ -1,0 +1,3 @@
+INFO
+The calculator was imported from https://github.com/kcfresh53/Godot4-Calculator
+and appropriate changes were made to it to match the theme of dd-uge-2

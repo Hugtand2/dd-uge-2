@@ -1,9 +1,10 @@
+Board
+Sprite2D
 Label
 Button
 CanvasLayer
 CollisionShape2D
 Area2D
-Sprite2D
 AudioStreamPlayer
 TextureButton
 Node2D

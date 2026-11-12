@@ -2,6 +2,7 @@ extends Node2D
 
 # Default pay, that can be deviated from
 const MAXPAYMENT = 20
+const CALCULATOR_SCENE := preload("res://Addons/Calculator/Resources/scenes/calculator.tscn")
 
 @onready var desk := $Desk
 @onready var money_label := $MoneyLabel
@@ -17,7 +18,7 @@ var current_paper: Board
 func _ready() -> void:
 	# Decide paper_types and probability distrubution of them
 	paper_types.add(A_Indkomst, 1.0)
-	
+	spawn_calculator()
 	money_label.text = TaxForm._kr(money)
 
 func customer_arrive() -> void:
@@ -78,6 +79,10 @@ func get_payout() -> void:
 	
 	AudioPlayer.play_sound_effect("res://Resources/Audio/SoundEffects/AnimationSoundEffects/money.mp3")
 	money_label.text = TaxForm._kr(money)
+
+func spawn_calculator() -> void:
+	var calc = CALCULATOR_SCENE.instantiate() as Board
+	desk.place_board(calc)
 
 # Test function
 func _input(event: InputEvent) -> void:

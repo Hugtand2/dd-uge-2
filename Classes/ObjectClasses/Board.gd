@@ -4,6 +4,7 @@ extends Node2D
 # Skriftstørrelser til tekst på papirer (blanketter, regelbogens sider osv.)
 const FONT_SIZE := 12
 const TITLE_FONT_SIZE := 16
+const DRAG_THRESHOLD := 6.0
 
 @export var size := Vector2.ZERO
 
@@ -13,6 +14,9 @@ var last_mouse := Vector2.ZERO
 var sprite: Sprite2D
 var on_desk := false
 
+var pressed_on_me := false           # museknap er trykket ned over boardet, men trækket er ikke startet
+var press_start := Vector2.ZERO
+
 # For icon handling (small sprite when on desk)
 var icon_sprite: Sprite2D
 var full_size := Vector2.ZERO
@@ -20,7 +24,7 @@ var icon_size := Vector2.ZERO
 var is_icon := false
 
 # Constructor
-func _init(sprite_path: String, sprite_scale: float, icon_path := "", icon_scale := 0.25) -> void:
+func _init(sprite_path := "", sprite_scale := 1.0, icon_path := "", icon_scale := 0.25) -> void:
 	if sprite_path != "":
 		var tex := load(sprite_path) as Texture2D
 		if tex == null:
@@ -54,32 +58,53 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			var mouse := get_global_mouse_position()
-			if _contains_point(mouse) and _is_over_control(mouse):
-				# Lad klikket gå videre til input-feltet (fx LineEdit på en blanket)
+			if _contains_point(mouse) and _is_topmost_at(mouse):
+				pressed_on_me = true
+				press_start = mouse
+				last_mouse = mouse
+			else:
+				pressed_on_me = false
 				dragging = false
-				bring_to_front()
-				return
-			if _contains_point(mouse):
-				get_viewport().gui_release_focus()
+		else:
+			pressed_on_me = false
+			if dragging:
+				_drop()
+
+	elif event is InputEventMouseMotion:
+		if pressed_on_me and not dragging:
+			var mouse := get_global_mouse_position()
+			if mouse.distance_to(press_start) >= DRAG_THRESHOLD:
 				dragging = true
+				pressed_on_me = false
 				last_mouse = mouse
 				lift()
 				bring_to_front()
-				get_viewport().set_input_as_handled()
-			else:
-				dragging = false
-		elif dragging:
-			_drop()
-	elif event is InputEventMouseMotion and dragging:
-		if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			_drop()
-			return
-		var mouse := _event_position(event)
-		var delta := mouse - last_mouse
-		last_mouse = mouse
-		for b in get_group():
-			b.global_position += delta
-		_update_icon_mode(mouse)
+				_cancel_gui_press()
+		if dragging:
+			if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+				_drop()
+				return
+			var mouse := get_global_mouse_position()
+			var delta := mouse - last_mouse
+			last_mouse = mouse
+			for b in get_group():
+				b.global_position += delta
+			_update_icon_mode(mouse)
+		if dragging:
+			get_viewport().set_input_as_handled()
+
+# Stopper at en knap under musen "trykkes", når vi har besluttet, at det var et træk
+func _cancel_gui_press() -> void:
+	get_viewport().gui_release_focus()
+
+func _is_topmost_at(point: Vector2) -> bool:
+	for node in get_tree().get_nodes_in_group("boards"):
+		var other := node as Board
+		if other == null or other == self:
+			continue
+		if other._contains_point(point) and other.get_index() > get_index():
+			return false
+	return true
 
 func _drop() -> void:
 	dragging = false
