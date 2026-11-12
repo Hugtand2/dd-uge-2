@@ -12,6 +12,7 @@ var sprite: Sprite2D
 var data: PackedStringArray
 var lines: PackedStringArray = []
 var customer_data: CustomerData
+var has_spoken := false
 
 func _ready() -> void:
 	text_bubble_dots_resource = load("res://Resources/Customers/!CustomerResources/speech-bubble-dots.webp")
@@ -46,13 +47,14 @@ func want_to_speak() -> void:
 	return
 
 func speak() -> void:
+	if has_spoken: return
 	text_bubble_dots.hide()
 	var section := customer_data.read_section("[DIALOGUE]")
 	if section.is_empty():
 		return
 	DialogueBox.start(name, section)
 	DialogueBox.closed.connect(_on_dialogue_closed, CONNECT_ONE_SHOT)
-
+	has_spoken = true
 func _on_dialogue_closed() -> void:
 	finished_speaking.emit()
 

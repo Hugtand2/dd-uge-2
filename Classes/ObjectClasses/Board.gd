@@ -42,8 +42,9 @@ func _init(sprite_path: String, sprite_scale: float, icon_path := "", icon_scale
 
 func _ready() -> void:
 	add_to_group("boards")
-	# Hides VBox, index 2 is VBox
-	get_child(2).hide()
+	# Hides VBox if it exists, index 2 is VBox
+	if get_children().size() == 3:
+		get_child(2).hide()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
