@@ -1,6 +1,10 @@
 class_name Board
 extends Node2D
 
+# Skriftstørrelser til tekst på papirer (blanketter, regelbogens sider osv.)
+const FONT_SIZE := 12
+const TITLE_FONT_SIZE := 16
+
 @export var size := Vector2.ZERO
 
 var clipped: Array[Board] = []
@@ -48,20 +52,13 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			var mouse := get_global_mouse_position()
-			if _contains_point(mouse) and _is_over_control(mouse):
-				# Lad klikket gå videre til input-feltet (fx LineEdit på en blanket)
+			var mouse := _event_position(event)
+			if not _contains_point(mouse) or _is_covered_at(mouse):
+				# Klikket er ved siden af, eller det tilhører et board oven på os
 				dragging = false
-				bring_to_front()
 				return
-			if _contains_point(mouse):
-				get_viewport().gui_release_focus()
-				dragging = true
-				last_mouse = mouse
-				lift()
-				bring_to_front()
-				get_viewport().set_input_as_handled()
-			else:
+			if _is_over_control(mouse):
+				# Lad klikket gå videre til Control'en (fx LineEdit eller Button)
 				dragging = false
 		elif dragging:
 			_drop()
@@ -69,7 +66,7 @@ func _input(event: InputEvent) -> void:
 		if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			_drop()
 			return
-		var mouse := get_global_mouse_position()
+		var mouse := _event_position(event)
 		var delta := mouse - last_mouse
 		last_mouse = mouse
 		for b in get_group():
@@ -83,6 +80,12 @@ func _drop() -> void:
 		clip(target)
 	for desk in get_tree().get_nodes_in_group("desks"):
 		desk.board_dropped(self)
+
+# Musens position i verdens-koordinater, læst fra selve eventet.
+# get_global_mouse_position() læser den rigtige cursor, så falske events
+# (fx fra TestBot i !DEBUG) ville ellers ikke kunne trække boards.
+func _event_position(event: InputEventMouse) -> Vector2:
+	return get_canvas_transform().affine_inverse() * event.position
 
 func bring_to_front() -> void:
 	var members := get_group()
@@ -101,6 +104,57 @@ func _is_over_control(global_point: Vector2) -> bool:
 				and c.get_global_rect().has_point(global_point):
 			return true
 	return false
+
+# Ligger der et andet board oven på dette punkt? Så er klikket ikke til os.
+# Det øverste board markerer ikke klikket som håndteret, når det rammer en
+# Control (ellers får Control'en det aldrig), så boards nedenunder skal selv
+# lade være med at reagere.
+func _is_covered_at(global_point: Vector2) -> bool:
+	for node in get_tree().get_nodes_in_group("boards"):
+		var other := node as Board
+		if other != null and other != self and other.is_visible_in_tree() 				and other.is_greater_than(self) and other._contains_point(global_point):
+			return true
+	return false
+
+# Lav en tekst-label til et papir. Den ignorerer musen, så man stadig kan
+# trække papiret ved at tage fat i teksten.
+func _make_label(text: String, font_size: int = FONT_SIZE) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.add_theme_color_override("font_color", Color.BLACK)
+	label.add_theme_font_size_override("font_size", font_size)
+	return label
+
+# Slå et board helt til eller fra. Et slukket board er usynligt, kan ikke
+# klikkes eller trækkes og clipper ikke til andre boards.
+# Kald den først, når boardet er i scenetræet (_ready slår det til igen).
+func set_enabled(enabled: bool) -> void:
+	visible = enabled
+	set_process_input(enabled)
+	if enabled:
+		add_to_group("boards")
+	else:
+		dragging = false
+		for other in clipped.duplicate():
+			unclip(other)
+		remove_from_group("boards")
+
+# Byt dette board ud med et andet (samme parent): det andet overtager plads,
+# lag og clips, og dette board slås fra.
+# Bruges fx når regelbogen bladrer til en side og tilbage igen.
+func replace_with(other: Board) -> void:
+	var neighbours := clipped.duplicate()
+	other.global_position = global_position
+	set_enabled(false)
+	other.set_enabled(true)
+	if other.get_parent() == get_parent():
+		# Læg det andet board lige oven på dette i tegne-rækkefølgen
+		var target := get_index() if other.get_index() < get_index() else get_index() + 1
+		get_parent().move_child(other, target)
+	for neighbour in neighbours:
+		other.clip(neighbour)
 
 func clip(other: Board) -> void:
 	if other == self or other in clipped:

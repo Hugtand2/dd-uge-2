@@ -1,0 +1,17 @@
+[TITLE]
+A-skat
+
+[LEFT]
+A-skat er skatten af A-indkomst, altså løn fra et almindeligt arbejde.
+1. AM-bidrag: 8 % af hele indkomsten. Det trækkes altid først.
+2. Fradrag: Træk kundens fradrag (hovedkort) fra indkomsten efter AM-bidrag. Bliver resultatet negativt, betales der ingen A-skat.
+3. A-skat: Gang resten med kundens trækprocent.
+4. I alt: Læg AM-bidrag, A-skat og eventuel ekstra skat (se højre side) sammen.
+
+[RIGHT]
+Ekstra skat ved høj indkomst
+Den ekstra sats betales kun af den del af indkomsten efter AM-bidrag, der ligger over grænsen. Fradraget trækkes ikke fra her.
+Mellemskat: 7,5 % over 641.200 kr om året
+Topskat: 7,5 % over 777.900 kr om året
+Toptopskat: 5 % over 2.592.700 kr om året
+På månedlige blanketter deles grænserne med 12: 53.433 kr, 64.825 kr og 216.058 kr.
