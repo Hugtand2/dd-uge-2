@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://1kofhr2csqn0"]
+
+[ext_resource type="Script" uid="uid://ck572nfndu4r8" path="res://!DEBUG/DebugScenes/test_desk/test_desk.gd" id="1_874ui"]
+[ext_resource type="PackedScene" uid="uid://jgva0pjpv0ps" path="res://Scenes&Scripts/GameObjects/desk/desk.tscn" id="2_njqgj"]
+
+[node name="TestDesk" type="Node2D" unique_id=700179253]
+script = ExtResource("1_874ui")
+
+[node name="Desk" parent="." unique_id=914102673 instance=ExtResource("2_njqgj")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2133847487]
+
+[node name="SpawnButton" type="Button" parent="CanvasLayer" unique_id=1157938778]
+offset_right = 8.0
+offset_bottom = 8.0
+focus_mode = 0
+text = "Spawn Board"
