@@ -66,11 +66,13 @@ func greet() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT
-		and _contains_mouse()):
+		and _contains_point(get_canvas_transform().affine_inverse() * event.position)):
 			get_viewport().set_input_as_handled()
 			speak()
 
-func _contains_mouse() -> bool:
+# Positionen læses fra eventet (ikke get_global_mouse_position()),
+# så falske klik fra TestBot i !DEBUG også virker.
+func _contains_point(global_point: Vector2) -> bool:
 	if sprite == null or sprite.texture == null:
 		return false
 	return sprite.get_rect().has_point(sprite.to_local(get_global_mouse_position()))

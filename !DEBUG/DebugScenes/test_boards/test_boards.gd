@@ -1,5 +1,7 @@
 extends Node2D
 
+const RULEBOOK := preload("res://Scenes&Scripts/InteractiveScenes/rulebook.tscn")
+
 var amount = 1
 var forms: Array[A_Indkomst] = []
 
@@ -16,6 +18,11 @@ func _ready() -> void:
 		yearly.position = Vector2(300, 0)
 		add_child(yearly)
 		forms.append(yearly)
+
+	# Regelbogen er en scene (ikke en klasse), så den laves med instantiate()
+	var rulebook := RULEBOOK.instantiate()
+	rulebook.position = Vector2(540, 240)
+	add_child(rulebook)
 
 # Tryk på "Test" (Å) for at validere de spawnede blanketter.
 # _input kører før GUI, så det virker også, mens svarfeltet har fokus.

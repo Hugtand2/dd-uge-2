@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bmu34nawejmqr"]
+
+[ext_resource type="Script" uid="uid://5rn27nbl7ymc" path="res://Scenes&Scripts/InteractiveScenes/rulebook.gd" id="1_id45j"]
+
+[node name="Rulebook" type="Node2D" unique_id=600207700]
+script = ExtResource("1_id45j")
+metadata/_custom_type_script = "uid://cjl1u5fei8uep"
