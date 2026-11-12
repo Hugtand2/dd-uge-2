@@ -46,15 +46,6 @@ func customer_leave() -> void:
 	remove_customer()
 	pass
 
-func _on_customer_finished_speaking() -> void:
-	current_paper = paper_types.pick_weighted_random().new()
-	desk.place_board(current_paper)
-
-func _on_customer_board_received(_board: Board = null) -> void:
-	print("Paper given")
-	get_money()
-	customer_leave()
-
 func remove_customer() -> void:
 	if current_customer == null:
 		return
@@ -62,22 +53,40 @@ func remove_customer() -> void:
 	current_customer = null
 	is_serving = false
 
-func get_money() -> void:
+func _on_customer_finished_speaking() -> void:
+	current_paper = paper_types.pick_weighted_random().new()
+	desk.place_board(current_paper)
+
+func _on_customer_board_received(_board: Board = null) -> void:
+	print("Paper given")
+	payment_guess = TaxForm._parse_kr(current_paper.answer_field.text)
+	get_payout()
+	customer_leave()
+
+func get_payout() -> void:
 	if not current_paper: return
-	# Test variable.value:
-	payment_guess = 100000
 	var actual_payment = current_paper.get_correct_total()
-	var dPayment = abs(actual_payment - payment_guess)
+	var d_payment = abs(actual_payment - payment_guess)
 	
-	# This distributes the pay according to dPayment via. a Gauss curve
-	# If dPayment == 0, it returns MAXPAY * 1
-	# If dPayment == actual_payment * 0.1, it returns 0
-	# If dPayment >= actual_payment * 0.1, it asymptonically returns MAXPAY * (-1)
-	money += (2 * pow(1.0/2, pow(dPayment/(actual_payment * 0.1), 2)) - 1) * MAXPAYMENT
+	# This distributes the pay according to d_payment via. a Gauss curve
+	# If d_payment == 0, it returns MAXPAY * 1
+	# If d_payment == actual_payment * 0.1, it returns 0
+	# If d_payment >= actual_payment * 0.1, it asymptotically returns MAXPAY * (-1)
+	var payout = (2 * pow(1.0/2, pow(d_payment/(actual_payment * 0.1), 2)) - 1) * MAXPAYMENT
+	if d_payment == 0: payout *= 1.25
+	money += payout
 	
 	AudioPlayer.play_sound_effect("res://Resources/Audio/SoundEffects/AnimationSoundEffects/money.mp3")
 	money_label.text = TaxForm._kr(money)
 
-# Test function:
+# Test function
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Test"): _on_customer_board_received()
+	if not current_paper: return
+	if event.is_action_pressed("Test"):
+		get_viewport().set_input_as_handled() # Skriv ikke "å" i svarfeltet
+		print("%s: korrekt %s, svar \"%s\", forskel %s" % [
+			current_paper.get_form_title(),
+			TaxForm._kr(current_paper.get_correct_total()),
+			current_paper.answer_field.text,
+			TaxForm._kr(current_paper.validate()),
+		])

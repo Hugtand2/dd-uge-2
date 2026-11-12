@@ -88,7 +88,7 @@ func get_global_rect() -> Rect2:
 	return Rect2(sprite.global_position + r.position * s, r.size * s)
 
 func board_dropped(board: Board, point: Vector2) -> void:
-	if get_global_rect().has_point(point):
+	if get_global_rect().has_point(point) and board.answer_field.text != "":
 		board_received.emit(board)
 
 static func get_customer_names() -> PackedStringArray:

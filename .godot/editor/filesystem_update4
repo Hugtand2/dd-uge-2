@@ -2,3 +2,6 @@ res://Setup/AudioSetup/audio_stream_player.tscn
 res://Classes/DatatypeClasses/Weighted_Array.gd
 res://Scenes&Scripts/work_place/work_place.tscn
 res://Scenes&Scripts/work_place/work_place.gd
+res://Classes/ObjectClasses/TaxForm.gd
+res://!DEBUG/DebugScenes/test_input/test_input.tscn
+res://Classes/CustomerClasses/Customer.gd
