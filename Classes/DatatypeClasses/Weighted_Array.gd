@@ -1,4 +1,4 @@
-class_name Weighed_Array
+class_name Weighted_Array
 extends RefCounted
 
 var items: Array[Array] = []
@@ -6,7 +6,7 @@ var items: Array[Array] = []
 func add(value, weight: float) -> void:
 	items.append([value, weight])
 
-func pick_weighed_random():
+func pick_weighted_random():
 	var total := 0.0
 	for item in items:
 		total += item[1]

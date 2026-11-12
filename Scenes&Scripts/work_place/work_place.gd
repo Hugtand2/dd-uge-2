@@ -10,7 +10,7 @@ var current_customer: Customer
 var is_serving := false
 var money := 0.00
 var payment_guess: float
-var paper_types := Weighed_Array.new()
+var paper_types := Weighted_Array.new()
 var current_paper: Board
 
 
@@ -47,12 +47,12 @@ func customer_leave() -> void:
 	pass
 
 func _on_customer_finished_speaking() -> void:
-	current_paper = paper_types.pick_weighed_random().new()
+	current_paper = paper_types.pick_weighted_random().new()
 	desk.place_board(current_paper)
 
 func _on_customer_board_received(_board: Board = null) -> void:
 	print("Paper given")
-	get_payout()
+	get_money()
 	customer_leave()
 
 func remove_customer() -> void:
@@ -62,13 +62,22 @@ func remove_customer() -> void:
 	current_customer = null
 	is_serving = false
 
-func get_payout() -> void:
-	var payout: float
+func get_money() -> void:
+	if not current_paper: return
+	# Test variable.value:
 	payment_guess = 100000
-	payout = MAXPAYMENT * (1 - abs(current_paper.get_correct_total() - payment_guess)/current_paper.get_correct_total())
-	money += payout
+	var actual_payment = current_paper.get_correct_total()
+	var dPayment = abs(actual_payment - payment_guess)
+	
+	# This distributes the pay according to dPayment via. a Gauss curve
+	# If dPayment == 0, it returns MAXPAY * 1
+	# If dPayment == actual_payment * 0.1, it returns 0
+	# If dPayment >= actual_payment * 0.1, it asymptonically returns MAXPAY * (-1)
+	money += (2 * pow(1.0/2, pow(dPayment/(actual_payment * 0.1), 2)) - 1) * MAXPAYMENT
+	
+	AudioPlayer.play_sound_effect("res://Resources/Audio/SoundEffects/AnimationSoundEffects/money.mp3")
 	money_label.text = TaxForm._kr(money)
-	pass
 
+# Test function:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Test"): _on_customer_board_received()

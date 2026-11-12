@@ -1,3 +1,4 @@
-res://!DEBUG/DebugScenes/test_desk/test_desk.tscn
-res://Classes/CustomerClasses/Customer.gd
+res://Setup/AudioSetup/audio_stream_player.tscn
+res://Classes/DatatypeClasses/Weighted_Array.gd
+res://Scenes&Scripts/work_place/work_place.tscn
 res://Scenes&Scripts/work_place/work_place.gd
