@@ -1,5 +1,7 @@
 extends Board
 
+const CALC_ICON_PATH := "res://Addons/Calculator/Resources/images/calc_icon_placeholder.png"
+const CALC_ICON_SCALE := 0.25
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
