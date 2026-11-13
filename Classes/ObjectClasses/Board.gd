@@ -4,6 +4,7 @@ extends Node2D
 # Skriftstørrelser til tekst på papirer (blanketter, regelbogens sider osv.)
 const FONT_SIZE := 12
 const TITLE_FONT_SIZE := 16
+const DRAG_THRESHOLD := 6.0
 
 @export var size := Vector2.ZERO
 
@@ -13,6 +14,9 @@ var last_mouse := Vector2.ZERO
 var sprite: Sprite2D
 var on_desk := false
 
+var pressed_on_me := false           # museknap er trykket ned over boardet, men trækket er ikke startet
+var press_start := Vector2.ZERO
+
 # For icon handling (small sprite when on desk)
 var icon_sprite: Sprite2D
 var full_size := Vector2.ZERO
@@ -20,7 +24,7 @@ var icon_size := Vector2.ZERO
 var is_icon := false
 
 # Constructor
-func _init(sprite_path: String, sprite_scale: float, icon_path := "", icon_scale := 0.25) -> void:
+func _init(sprite_path := "", sprite_scale := 1.0, icon_path := "", icon_scale := 0.25) -> void:
 	if sprite_path != "":
 		var tex := load(sprite_path) as Texture2D
 		if tex == null:
@@ -46,41 +50,61 @@ func _init(sprite_path: String, sprite_scale: float, icon_path := "", icon_scale
 
 func _ready() -> void:
 	add_to_group("boards")
+	# Hides VBox if it exists, index 2 is VBox
+	if get_children().size() == 3:
+		get_child(2).hide()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			var mouse := _event_position(event)
-			if not _contains_point(mouse) or _is_covered_at(mouse):
-				# Klikket er ved siden af, eller det tilhører et board oven på os
+			var mouse := get_global_mouse_position()
+			if _contains_point(mouse) and _is_topmost_at(mouse):
+				pressed_on_me = true
+				press_start = mouse
+				last_mouse = mouse
+			else:
+				pressed_on_me = false
 				dragging = false
-				return
-			if _is_over_control(mouse):
-				# Lad klikket gå videre til Control'en (fx LineEdit eller Button)
-				dragging = false
-				bring_to_front()
-				return
-			if _contains_point(mouse):
-				get_viewport().gui_release_focus()
+		else:
+			pressed_on_me = false
+			if dragging:
+				_drop()
+
+	elif event is InputEventMouseMotion:
+		if pressed_on_me and not dragging:
+			var mouse := get_global_mouse_position()
+			if mouse.distance_to(press_start) >= DRAG_THRESHOLD:
 				dragging = true
+				pressed_on_me = false
 				last_mouse = mouse
 				lift()
 				bring_to_front()
-				get_viewport().set_input_as_handled()
-			else:
-				dragging = false
-		elif dragging:
-			_drop()
-	elif event is InputEventMouseMotion and dragging:
-		if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			_drop()
-			return
-		var mouse := _event_position(event)
-		var delta := mouse - last_mouse
-		last_mouse = mouse
-		for b in get_group():
-			b.global_position += delta
-		_update_icon_mode(mouse)
+				_cancel_gui_press()
+		if dragging:
+			if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+				_drop()
+				return
+			var mouse := get_global_mouse_position()
+			var delta := mouse - last_mouse
+			last_mouse = mouse
+			for b in get_group():
+				b.global_position += delta
+			_update_icon_mode(mouse)
+		if dragging:
+			get_viewport().set_input_as_handled()
+
+# Stopper at en knap under musen "trykkes", når vi har besluttet, at det var et træk
+func _cancel_gui_press() -> void:
+	get_viewport().gui_release_focus()
+
+func _is_topmost_at(point: Vector2) -> bool:
+	for node in get_tree().get_nodes_in_group("boards"):
+		var other := node as Board
+		if other == null or other == self:
+			continue
+		if other._contains_point(point) and other.get_index() > get_index():
+			return false
+	return true
 
 func _drop() -> void:
 	dragging = false
@@ -89,6 +113,9 @@ func _drop() -> void:
 		clip(target)
 	for desk in get_tree().get_nodes_in_group("desks"):
 		desk.board_dropped(self)
+	var mouse = get_global_mouse_position()
+	for customer in get_tree().get_nodes_in_group("customers"):
+		customer.board_dropped(self, mouse)
 
 # Musens position i verdens-koordinater, læst fra selve eventet.
 # get_global_mouse_position() læser den rigtige cursor, så falske events
@@ -146,6 +173,7 @@ func set_enabled(enabled: bool) -> void:
 		add_to_group("boards")
 	else:
 		dragging = false
+		pressed_on_me = false
 		for other in clipped.duplicate():
 			unclip(other)
 		remove_from_group("boards")

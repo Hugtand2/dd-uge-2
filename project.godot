@@ -30,6 +30,7 @@ window/stretch/aspect="expand"
 
 folder_colors={
 "res://!DEBUG/": "yellow",
+"res://Addons/": "gray",
 "res://Classes/": "orange",
 "res://Resources/": "pink",
 "res://Resources/Audio/": "pink",
