@@ -88,8 +88,12 @@ func get_global_rect() -> Rect2:
 	return Rect2(sprite.global_position + r.position * s, r.size * s)
 
 func board_dropped(board: Board, point: Vector2) -> void:
-	if get_global_rect().has_point(point) and board.answer_field.text != "":
-		board_received.emit(board)
+	# Kun blanketter kan afleveres. Lommeregner, regelbog osv. har intet svarfelt.
+	var form := board as TaxForm
+	if form == null:
+		return
+	if get_global_rect().has_point(point) and form.answer_field.text.strip_edges() != "":
+		board_received.emit(form)
 
 static func get_customer_names() -> PackedStringArray:
 	var names := PackedStringArray()

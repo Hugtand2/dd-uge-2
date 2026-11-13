@@ -86,3 +86,4 @@ static func _parse_kr(text: String) -> float:
 	if text.contains(","):
 		text = text.replace(".", "").replace(",", ".")
 	return text.to_float() if text.is_valid_float() else 0.0
+	

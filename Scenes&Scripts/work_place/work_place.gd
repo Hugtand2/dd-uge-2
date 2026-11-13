@@ -3,6 +3,7 @@ extends Node2D
 # Default pay, that can be deviated from
 const MAXPAYMENT = 20
 const CALCULATOR_SCENE := preload("res://Addons/Calculator/Resources/scenes/calculator.tscn")
+const RULEBOOK := preload("res://Scenes&Scripts/InteractiveScenes/rulebook.tscn")
 
 @onready var desk := $Desk
 @onready var money_label := $MoneyLabel
@@ -18,9 +19,15 @@ var current_paper: Board
 func _ready() -> void:
 	# Decide paper_types and probability distrubution of them
 	paper_types.add(A_Indkomst, 1.0)
+	paper_types.add(Aktieindkomst, 0.5)
 	spawn_calculator()
+	# Smart tænkt Mikkel!
 	money_label.text = TaxForm._kr(money)
-
+	
+	# spawn rulebook
+	var rulebook := RULEBOOK.instantiate()
+	desk.place_board(rulebook)
+	
 func customer_arrive() -> void:
 	if current_customer:
 		return
@@ -54,6 +61,14 @@ func remove_customer() -> void:
 	current_customer = null
 	is_serving = false
 
+# Fjern blanketten, når kunden har fået den tilbage
+func remove_paper() -> void:
+	if current_paper == null:
+		return
+	current_paper.set_enabled(false) # skjul, fjern clips og tag den ud af "boards"
+	current_paper.queue_free()
+	current_paper = null
+
 func _on_customer_finished_speaking() -> void:
 	current_paper = paper_types.pick_weighted_random().new()
 	desk.place_board(current_paper)
@@ -62,6 +77,7 @@ func _on_customer_board_received(_board: Board = null) -> void:
 	print("Paper given")
 	payment_guess = TaxForm._parse_kr(current_paper.answer_field.text)
 	get_payout()
+	remove_paper()
 	customer_leave()
 
 func get_payout() -> void:
