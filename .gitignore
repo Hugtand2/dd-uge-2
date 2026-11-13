@@ -1,0 +1,6 @@
+.godot/
+/android/
+
+CLAUDE.md
+.claude/settings.local.json
+!DEBUG/Screenshots/
