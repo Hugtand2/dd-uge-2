@@ -9,13 +9,16 @@ extends Board
 #   add_child(rulebook)
 
 const SPRITE_PATH := "res://Resources/Sprites/GameObjectSprites/rulebook_placeholder.png"
+const ICON_SPRITE_PATH := "res://Resources/Sprites/GameObjectSprites/rulebook_icon.png"
 # Skal være den samme skala som RulebookPage.SPRITE_SCALE
 const SPRITE_SCALE := 1.0
+const ICON_SPRITE_SCALE := 0.25
 
 # Siderne i bogen, i den rækkefølge knapperne skal stå.
 # Tilføj en linje her, når der kommer en ny skat med sin egen txt-fil.
 const PAGES: Array[String] = [
 	"res://Resources/Rulebook/Pages/a_skat.txt",
+	"res://Resources/Rulebook/Pages/aktieskat.txt",
 ]
 
 const BUTTONS_POSITION := Vector2(24, 44)   # under "SKAT" på venstre side
@@ -25,7 +28,7 @@ var pages: Array[RulebookPage] = []
 
 # En scene kalder _init() uden argumenter, så sprite og skala sættes her
 func _init() -> void:
-	super(SPRITE_PATH, SPRITE_SCALE)
+	super(SPRITE_PATH, SPRITE_SCALE, ICON_SPRITE_PATH, ICON_SPRITE_SCALE)
 	_build_ui()
 
 func _build_ui() -> void:
@@ -66,6 +69,7 @@ func _notification(what: int) -> void:
 			if not is_instance_valid(page):
 				continue
 			if page.is_inside_tree():
+				# Delete
 				page.queue_free()
 			else:
 				page.free()

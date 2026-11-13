@@ -30,9 +30,10 @@ func _run() -> void:
 
 	bot.check(book.visible and book.is_in_group("boards"), "Regelbogen er synlig og er et board")
 	var buttons := book.find_children("*", "Button", true, false)
-	bot.check_equal(buttons.size(), 1, "Regelbogen har én knap (kun A-skat indtil videre)")
+	bot.check_equal(buttons.size(), 2, "Regelbogen har en knap for hver side (A-skat og Aktieskat)")
 	var page_button := buttons[0] as Button
 	bot.check_equal(page_button.text, "A-skat", "Knappen har sidens titel")
+	bot.check_equal((buttons[1] as Button).text, "Aktieskat", "Den anden knap er Aktieskat")
 
 	# 1. Regelbogen kan trækkes (grib den på højre side, hvor der ikke er knapper)
 	var grab := book.global_position + Vector2(450, 200)

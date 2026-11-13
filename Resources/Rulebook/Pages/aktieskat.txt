@@ -1,0 +1,16 @@
+[TITLE]
+Aktieskat
+
+[LEFT]
+Aktieskat er skatten af aktieindkomst, altså gevinst ved salg af aktier. Den gøres op for hele året.
+1. Gevinst: Læg gevinsterne fra årets handler sammen.
+2. Tab: Træk tabene fra gevinsterne. Resultatet er årets nettogevinst.
+3. Ingen gevinst: Er nettogevinsten 0 kr eller negativ, betales der ingen aktieskat. Skriv 0.
+4. Skat: Beregn skatten af nettogevinsten med satserne på højre side.
+
+[RIGHT]
+Satser 2026
+27 % af nettogevinsten op til 79.400 kr
+42 % af den del, der ligger over 79.400 kr
+Der betales ikke AM-bidrag af aktieindkomst.
+Eksempel: Gevinst 100.000 kr og 20.000 kr, tab 10.000 kr. Nettogevinst: 110.000 kr. Skat: 79.400 x 27 % + 30.600 x 42 % = 21.438 + 12.852 = 34.290 kr.

@@ -17,6 +17,10 @@ const SPRITE_PATH := "res://Resources/Sprites/GameObjectSprites/rulebook_page_pl
 # Skal være den samme skala som regelbogen, så de dækker hinanden præcist
 const SPRITE_SCALE := 1.0
 
+const ICON_SPRITE_PATH := "res://Resources/Sprites/GameObjectSprites/rulebook_icon.png"
+const ICON_SPRITE_SCALE := 0.25
+
+
 const MARGIN := 20.0        # afstand fra papirets kant til teksten
 const COLUMN_GAP := 20.0    # afstand mellem venstre og højre spalte
 const COLUMN_TOP := 44.0    # hvor spalterne starter (under titlen)
@@ -27,7 +31,7 @@ var right_lines := PackedStringArray()
 var exit_button: Button
 
 func _init(text_path: String) -> void:
-	super(SPRITE_PATH, SPRITE_SCALE)
+	super(SPRITE_PATH, SPRITE_SCALE, ICON_SPRITE_PATH, ICON_SPRITE_SCALE)
 	_load_text(text_path)
 	_build_ui()
 

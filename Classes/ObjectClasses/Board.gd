@@ -46,8 +46,6 @@ func _init(sprite_path: String, sprite_scale: float, icon_path := "", icon_scale
 
 func _ready() -> void:
 	add_to_group("boards")
-	# Hides VBox, index 2 is VBox
-	get_child(2).hide()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -244,6 +242,10 @@ func set_icon_mode(on: bool) -> void:
 	sprite.visible = not on
 	if icon_sprite:
 		icon_sprite.visible = on
+	# Som ikon vises kun ikonet: skjul alt andet indhold (tekst, felter, knapper)
+	for child in get_children():
+		if child != sprite and child != icon_sprite and child is CanvasItem:
+			child.visible = not on
 	size = icon_size if on else full_size
 	global_position = center - size / 2.0
 
@@ -253,11 +255,9 @@ func _update_icon_mode(mouse: Vector2) -> void:
 	var over_desk := _is_point_over_desk(mouse)
 	if over_desk and not is_icon:
 		set_icon_mode(true)
-		get_child(2).hide()
 		global_position = mouse - size / 2.0     # icon centered on the cursor
 	elif not over_desk and is_icon:
 		set_icon_mode(false)
-		get_child(2).show()
 		global_position = mouse - size / 2.0     # full board centered on the cursor
 	else:
 		return

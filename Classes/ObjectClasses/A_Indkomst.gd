@@ -64,7 +64,6 @@ func get_correct_total() -> float:
 func _add_fields(box: VBoxContainer) -> void:
 	var per := "pr. år" if is_yearly() else "pr. md"
 	box.add_child(_make_label("Samlet indkomst (%s): %s" % [per, _kr(indkomst)]))
-	box.add_child(_make_label("AM-bidrag: %d %%" % roundi(AM_RATE * 100)))
 	box.add_child(_make_label("Trækprocent (A-skat): %d %%" % roundi(traekprocent * 100)))
 	box.add_child(_make_label("Fradrag (hovedkort, %s): %s" % [per, _kr(fradrag)]))
 	box.add_child(_make_label("I alt at betale til SKAT:"))
