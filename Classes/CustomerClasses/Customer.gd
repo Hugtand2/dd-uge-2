@@ -14,6 +14,7 @@ var data: PackedStringArray
 var lines: PackedStringArray = []
 var customer_data: CustomerData
 var has_spoken := false
+var can_interact := false
 
 func _ready() -> void:	
 	add_to_group("customers")
@@ -50,14 +51,16 @@ func want_to_speak() -> void:
 	return
 
 func speak() -> void:
-	if has_spoken: return
+	if not can_interact or has_spoken:
+		return
 	text_bubble_dots.hide()
 	var section := customer_data.read_section("[DIALOGUE]")
 	if section.is_empty():
 		return
+	has_spoken = true
 	DialogueBox.start(name, section)
 	DialogueBox.closed.connect(_on_dialogue_closed, CONNECT_ONE_SHOT)
-	has_spoken = true
+
 func _on_dialogue_closed() -> void:
 	finished_speaking.emit()
 
@@ -68,6 +71,8 @@ func greet() -> void:
 	DialogueText.start(name, PackedStringArray([greetings[randi() % greetings.size()]]))
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not can_interact:
+		return
 	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT
 		and _contains_point(get_canvas_transform().affine_inverse() * event.position)):
 			get_viewport().set_input_as_handled()

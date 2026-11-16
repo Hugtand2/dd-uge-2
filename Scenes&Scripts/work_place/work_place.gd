@@ -58,6 +58,7 @@ func customer_arrive() -> void:
 	current_customer.finished_speaking.connect(_on_customer_finished_speaking)
 	current_customer.board_received.connect(_on_customer_board_received)
 	current_customer.want_to_speak()
+	current_customer.can_interact = true
 	return
 
 func customer_leave() -> void:

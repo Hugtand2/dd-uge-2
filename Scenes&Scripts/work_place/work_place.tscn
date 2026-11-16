@@ -11,62 +11,6 @@
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_v1nc2"]
 gradient = SubResource("Gradient_6c7u1")
 
-[sub_resource type="Animation" id="Animation_xrtsr"]
-resource_name = "GameOverScreenFall"
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("GameOverScreen:position:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(2, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.13333334, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("GameOverScreen:position:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(2, 0),
-"points": PackedFloat32Array(-648, -0.25, 0, 0.25, 0, 0, -0.13333334, -108.00001, 0, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-
-[sub_resource type="Animation" id="Animation_6c7u1"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("GameOverScreen:position:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("GameOverScreen:position:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-648, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_6c7u1"]
-_data = {
-&"GameOverScreenFall": SubResource("Animation_xrtsr"),
-&"RESET": SubResource("Animation_6c7u1")
-}
-
 [node name="WorkPlace" type="Node2D" unique_id=1718905792]
 script = ExtResource("1_nsi5y")
 
@@ -185,6 +129,3 @@ offset_transform_enabled = true
 text = "Start a new job"
 icon_alignment = 1
 script = ExtResource("5_xrtsr")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1572269266]
-libraries/ = SubResource("AnimationLibrary_6c7u1")
