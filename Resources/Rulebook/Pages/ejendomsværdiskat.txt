@@ -1,0 +1,15 @@
+[TITLE]
+Ejendomsværdiskat
+
+[LEFT]
+Ejendomsværdiskat er skatten af værdien af kundens bolig. Den gøres op for hele året.
+1. Vurdering: Find ejendomsvurderingen på blanketten.
+2. Fradrag: Træk 20 % fra vurderingen. De resterende 80 % er grundlaget for skatten.
+3. Skat: Beregn skatten af grundlaget med satserne på højre side.
+
+[RIGHT]
+Satser 2026
+0,51 % af grundlaget op til 9.200.000 kr
+1,4 % af den del, der ligger over 9.200.000 kr
+Grænsen gælder grundlaget efter fradraget, ikke selve vurderingen.
+Eksempel: Vurdering 15.000.000 kr. Fradrag 20 %: 3.000.000 kr. Grundlag: 12.000.000 kr. Skat: 9.200.000 x 0,51 % + 2.800.000 x 1,4 % = 46.920 + 39.200 = 86.120 kr.
