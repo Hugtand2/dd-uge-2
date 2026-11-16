@@ -46,14 +46,15 @@ func customer_arrive() -> void:
 	is_serving = true
 	current_customer = Customer.new(Customer.get_random_customer_name())
 	add_child(current_customer)
-	# Loads current_customer just in front of backgroun at index 0
+	# Loads current_customer just in front of background at index 0
 	move_child(current_customer, 1)
 	
-	############################################################################
-	# Insert animation
-	current_customer.position = Vector2i(get_viewport_rect().size/2)
-	############################################################################
-	# On anim.finished():
+	# Tweens the customer in
+	current_customer.position = Vector2(get_viewport_rect().size/2) - Vector2(400,0)
+	var tween = get_tree().create_tween()
+	tween.tween_property(current_customer, "position", Vector2(get_viewport_rect().size/2), 1).set_trans(Tween.TRANS_SINE)
+	
+	await tween.finished
 	current_customer.finished_speaking.connect(_on_customer_finished_speaking)
 	current_customer.board_received.connect(_on_customer_board_received)
 	current_customer.want_to_speak()
@@ -64,9 +65,12 @@ func customer_leave() -> void:
 		return
 	is_serving = false
 	served_during_sprint += 1
-	############################################################################
-	# Insert animation
-	############################################################################
+	
+	#Tween the customer out
+	var tween = get_tree().create_tween()
+	tween.tween_property(current_customer, "position", Vector2(get_viewport_rect().size/2 + Vector2(400,0)), 1).set_trans(Tween.TRANS_SINE)
+	
+	await tween.finished
 	remove_customer()
 	if served_during_sprint >= sprint_size: finish_sprint()
 
