@@ -4,6 +4,7 @@ extends Node2D
 const MAXPAYMENT = 20
 const CALCULATOR_SCENE := preload("res://Addons/Calculator/Resources/scenes/calculator.tscn")
 const RULEBOOK := preload("res://Scenes&Scripts/InteractiveScenes/rulebook.tscn")
+const WELCOME_LETTER := "res://Resources/Letters/welcome_letter.txt"
 
 @onready var desk := $Desk
 @onready var money_label := $MoneyLabel
@@ -39,7 +40,10 @@ func _ready() -> void:
 	# spawn rulebook
 	var rulebook := RULEBOOK.instantiate()
 	desk.place_board(rulebook, Vector2(200, 30))
-	
+
+	# spawn velkomstbrevet: en konvolut på skrivebordet, en side når det trækkes væk
+	desk.place_board(Letter.new(WELCOME_LETTER), Vector2(0, 30))
+
 func customer_arrive() -> void:
 	if current_customer:
 		return

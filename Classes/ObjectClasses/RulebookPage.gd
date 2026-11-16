@@ -30,8 +30,9 @@ var left_lines := PackedStringArray()
 var right_lines := PackedStringArray()
 var exit_button: Button
 
-func _init(text_path: String) -> void:
-	super(SPRITE_PATH, SPRITE_SCALE, ICON_SPRITE_PATH, ICON_SPRITE_SCALE)
+# icon_path og icon_scale kan ændres af underklasser (fx Letter), der vil have et andet ikon
+func _init(text_path: String, icon_path := ICON_SPRITE_PATH, icon_scale := ICON_SPRITE_SCALE) -> void:
+	super(SPRITE_PATH, SPRITE_SCALE, icon_path, icon_scale)
 	_load_text(text_path)
 	_build_ui()
 
@@ -52,11 +53,17 @@ func _build_ui() -> void:
 	title_label.position = Vector2(0, 10)
 	title_label.size = Vector2(size.x, 0)
 	add_child(title_label)
+	_add_columns()
+	_add_exit_button()
 
+# To spalter. Underklasser (fx Letter) kan overskrive denne for et andet layout.
+func _add_columns() -> void:
 	var column_width := (size.x - 2 * MARGIN - COLUMN_GAP) / 2
 	_add_column(left_lines, MARGIN, column_width)
 	_add_column(right_lines, MARGIN + column_width + COLUMN_GAP, column_width)
 
+# "Tilbage"-knappen. Underklasser uden knap (fx Letter) overskriver denne med `pass`.
+func _add_exit_button() -> void:
 	# Knappen er den eneste Control på siden, der tager imod klik
 	exit_button = Button.new()
 	exit_button.text = "Tilbage"
