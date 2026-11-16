@@ -1,0 +1,11 @@
+[TITLE]
+Velkommen til Skattekontoret
+
+[LEFT]
+Kære nye medarbejder,
+Dette er en pladsholder-tekst. Skriv hele brevet her under [LEFT].
+Hver linje i filen bliver til sit eget afsnit på siden.
+Ring med klokken, når du er klar til den første kunde.
+Med venlig hilsen, Chefen
+
+[RIGHT]
