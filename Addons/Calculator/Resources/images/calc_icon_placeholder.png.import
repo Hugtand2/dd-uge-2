@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b74g3hoc785qq"
-path="res://.godot/imported/rulebook_03_tilbage.png-150b9e9561932576cc1822d9ed6171ef.ctex"
+uid="uid://haj7k4ppqcxc"
+path="res://.godot/imported/calc_icon_placeholder.png-df57f99044147b3df710f402c88a0a6f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://!DEBUG/Screenshots/rulebook_03_tilbage.png"
-dest_files=["res://.godot/imported/rulebook_03_tilbage.png-150b9e9561932576cc1822d9ed6171ef.ctex"]
+source_file="res://Addons/Calculator/Resources/images/calc_icon_placeholder.png"
+dest_files=["res://.godot/imported/calc_icon_placeholder.png-df57f99044147b3df710f402c88a0a6f.ctex"]
 
 [params]
 

@@ -1,11 +1,9 @@
-Sprite2D
-RichTextLabel
-Board
 Label
 Button
 CanvasLayer
 CollisionShape2D
 Area2D
+Sprite2D
 AudioStreamPlayer
 TextureButton
 Node2D

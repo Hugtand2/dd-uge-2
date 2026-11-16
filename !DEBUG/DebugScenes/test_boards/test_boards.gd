@@ -3,7 +3,7 @@ extends Node2D
 const RULEBOOK := preload("res://Scenes&Scripts/InteractiveScenes/rulebook.tscn")
 
 var amount = 1
-var forms: Array[A_Indkomst] = []
+var forms: Array[TaxForm] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,6 +18,11 @@ func _ready() -> void:
 		yearly.position = Vector2(300, 0)
 		add_child(yearly)
 		forms.append(yearly)
+
+		var stocks := Aktieindkomst.new()   # aktieskat (altid årlig)
+		stocks.position = Vector2(600, 0)
+		add_child(stocks)
+		forms.append(stocks)
 
 	# Regelbogen er en scene (ikke en klasse), så den laves med instantiate()
 	var rulebook := RULEBOOK.instantiate()
