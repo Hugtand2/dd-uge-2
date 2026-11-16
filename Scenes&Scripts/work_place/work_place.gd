@@ -88,13 +88,18 @@ func game_over() -> void:
 	game_over_sub_label.text = "The firing squad is coming for you"
 	red_tint.size = get_viewport_rect().size
 
+	game_over_screen.position = Vector2(0, -get_viewport_rect().size.y)   # start off-screen, avoids a one-frame flash
+	retry_button.disabled = true
 	game_over_screen.show()
-	retry_button.show()
 	await get_tree().process_frame
 
 	var center := get_viewport_rect().size / 2
 	game_over_label.position = center - game_over_label.size / 2
 	retry_button.position = Vector2(center.x - retry_button.size.x / 2, center.y + 125)
+
+	$AnimationPlayer.play("GameOverScreenFall")
+	await $AnimationPlayer.animation_finished
+	retry_button.disabled = false
 
 func remove_customer() -> void:
 	if current_customer == null:
