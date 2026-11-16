@@ -24,8 +24,9 @@ var sprint_money := 0.00
 
 func _ready() -> void:
 	# Decide paper_types and probability distrubution of them
-	paper_types.add(A_Indkomst, 1.0)
-	paper_types.add(Aktieindkomst, 0.5)
+	paper_types.add(A_Indkomst, 2.0)
+	paper_types.add(Aktieindkomst, 1.0)
+	paper_types.add(Ejendomsværdiskat, 100.0)
 	spawn_calculator()
 	# Smart tænkt Mikkel!
 	money_label.text = TaxForm._kr(money)

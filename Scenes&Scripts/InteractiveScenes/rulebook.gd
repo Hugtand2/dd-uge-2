@@ -19,6 +19,7 @@ const ICON_SPRITE_SCALE := 0.25
 const PAGES: Array[String] = [
 	"res://Resources/Rulebook/Pages/a_skat.txt",
 	"res://Resources/Rulebook/Pages/aktieskat.txt",
+	"res://Resources/Rulebook/Pages/ejendomsværdiskat.txt",
 ]
 
 const BUTTONS_POSITION := Vector2(24, 44)   # under "SKAT" på venstre side
