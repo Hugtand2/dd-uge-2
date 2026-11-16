@@ -9,6 +9,11 @@ const WELCOME_LETTER := "res://Resources/Letters/welcome_letter.txt"
 @onready var desk := $Desk
 @onready var money_label := $MoneyLabel
 @onready var quota_label := $QuotaLabel
+@onready var game_over_screen := $GameOverScreen
+@onready var game_over_label := $GameOverScreen/GameOverLabel
+@onready var game_over_sub_label := $GameOverScreen/GameOverLabel/GameOverSubLabel
+@onready var red_tint := $GameOverScreen/RedTint
+@onready var retry_button := $GameOverScreen/RetryButton
 
 var current_customer: Customer
 var is_serving := false
@@ -45,17 +50,19 @@ func customer_arrive() -> void:
 	is_serving = true
 	current_customer = Customer.new(Customer.get_random_customer_name())
 	add_child(current_customer)
-	# Loads current_customer just in front of backgroun at index 0
+	# Loads current_customer just in front of background at index 0
 	move_child(current_customer, 1)
 	
-	############################################################################
-	# Insert animation
-	current_customer.position = Vector2i(get_viewport_rect().size/2)
-	############################################################################
-	# On anim.finished():
+	# Tweens the customer in
+	current_customer.position = Vector2(get_viewport_rect().size/2) - Vector2(400,0)
+	var tween = get_tree().create_tween()
+	tween.tween_property(current_customer, "position", Vector2(get_viewport_rect().size/2), 1).set_trans(Tween.TRANS_SINE)
+	
+	await tween.finished
 	current_customer.finished_speaking.connect(_on_customer_finished_speaking)
 	current_customer.board_received.connect(_on_customer_board_received)
 	current_customer.want_to_speak()
+	current_customer.can_interact = true
 	return
 
 func customer_leave() -> void:
@@ -63,9 +70,12 @@ func customer_leave() -> void:
 		return
 	is_serving = false
 	served_during_sprint += 1
-	############################################################################
-	# Insert animation
-	############################################################################
+	
+	#Tween the customer out
+	var tween = get_tree().create_tween()
+	tween.tween_property(current_customer, "position", Vector2(get_viewport_rect().size/2 + Vector2(400,0)), 1).set_trans(Tween.TRANS_SINE)
+	
+	await tween.finished
 	remove_customer()
 	if served_during_sprint >= sprint_size: finish_sprint()
 
@@ -77,9 +87,43 @@ func finish_sprint() -> void:
 	
 	# If quota not reached
 	else:
-		quota_label.text = "Quota not reached!?"
-		quota_label.show()
-	return
+		game_over()
+
+func game_over() -> void:
+	quota_label.text = "Quota not reached!?"
+	quota_label.show()
+	
+	move_child(game_over_screen, -1)
+	game_over_label.text = "You're fired"
+	game_over_sub_label.text = "The firing squad is coming for you"
+	red_tint.size = get_viewport_rect().size
+	
+	game_over_screen.position = Vector2(0, -get_viewport_rect().size.y)   # start off-screen, avoids a one-frame flash
+	retry_button.disabled = true
+	game_over_screen.show()
+	await get_tree().process_frame
+	
+	var center := get_viewport_rect().size / 2
+	game_over_label.position = center - game_over_label.size / 2
+	retry_button.position = Vector2(center.x - retry_button.size.x / 2, center.y + 125)
+	
+	
+	var fade := get_tree().create_tween()
+	fade.tween_property(AudioPlayer.music_player, "volume_db", -80.0, 1)
+	
+	await fade.finished
+	var bounce := get_tree().create_tween()
+	bounce.tween_property(game_over_screen, "position", Vector2.ZERO, 1) \
+		.from(Vector2(0,-648)) \
+		.set_trans(Tween.TRANS_BOUNCE) \
+		.set_ease(Tween.EASE_OUT)
+	
+	# Plays sound effect on first impact
+	get_tree().create_timer(0.364).timeout.connect(
+		func(): AudioPlayer.play_sound_effect("res://Resources/Audio/SoundEffects/AnimationSoundEffects/GameOverScreenFallHit.mp3"))
+	
+	await bounce.finished
+	retry_button.disabled = false
 
 func remove_customer() -> void:
 	if current_customer == null:
