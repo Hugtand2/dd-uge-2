@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://jgva0pjpv0ps" path="res://Scenes&Scripts/GameObjects/desk/desk.tscn" id="2_tug3r"]
 [ext_resource type="Texture2D" uid="uid://catdmr57c2l5c" path="res://Resources/Sprites/GameObjectSprites/bell.png" id="3_tug3r"]
 [ext_resource type="Script" uid="uid://c4j6svabuvf70" path="res://Scenes&Scripts/GameObjects/bell/bell.gd" id="3_xrtsr"]
+[ext_resource type="Script" uid="uid://n7m0ptj4wso2" path="res://Scenes&Scripts/work_place/retry_button.gd" id="5_xrtsr"]
 
 [sub_resource type="Gradient" id="Gradient_6c7u1"]
 
@@ -61,3 +62,69 @@ text = "Test"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="GameOverScreen" type="Control" parent="." unique_id=1523947999]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RedTint" type="ColorRect" parent="GameOverScreen" unique_id=695340755]
+layout_mode = 0
+color = Color(0.6666667, 0.09019608, 0.07450981, 0.88235295)
+
+[node name="GameOverLabel" type="Label" parent="GameOverScreen" unique_id=1945859335]
+custom_maximum_size = Vector2(1000, 219)
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -243.0
+offset_top = -129.5
+offset_right = 203.0
+offset_bottom = 89.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 135
+text = "Test"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="GameOverSubLabel" type="Label" parent="GameOverScreen/GameOverLabel" unique_id=1288102764]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 65.5
+offset_right = 20.0
+offset_bottom = 88.5
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+text = "Test"
+horizontal_alignment = 1
+
+[node name="RetryButton" type="Button" parent="GameOverScreen" unique_id=1545883961]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -79.0
+offset_top = 140.0
+offset_right = 46.0
+offset_bottom = 171.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+text = "Start a new job"
+icon_alignment = 1
+script = ExtResource("5_xrtsr")

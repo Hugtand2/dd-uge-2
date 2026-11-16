@@ -1,8 +1,11 @@
-Label
 Button
+ColorRect
+Area2D
+Control
+Container
+Label
 CanvasLayer
 CollisionShape2D
-Area2D
 Sprite2D
 AudioStreamPlayer
 TextureButton

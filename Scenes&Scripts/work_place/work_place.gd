@@ -8,6 +8,11 @@ const RULEBOOK := preload("res://Scenes&Scripts/InteractiveScenes/rulebook.tscn"
 @onready var desk := $Desk
 @onready var money_label := $MoneyLabel
 @onready var quota_label := $QuotaLabel
+@onready var game_over_screen := $GameOverScreen
+@onready var game_over_label := $GameOverScreen/GameOverLabel
+@onready var game_over_sub_label := $GameOverScreen/GameOverLabel/GameOverSubLabel
+@onready var red_tint := $GameOverScreen/RedTint
+@onready var retry_button := $GameOverScreen/RetryButton
 
 var current_customer: Customer
 var is_serving := false
@@ -26,7 +31,7 @@ func _ready() -> void:
 	# Decide paper_types and probability distrubution of them
 	paper_types.add(A_Indkomst, 2.0)
 	paper_types.add(Aktieindkomst, 1.0)
-	paper_types.add(Ejendomsværdiskat, 100.0)
+	paper_types.add(Ejendomsværdiskat, 1.0)
 	spawn_calculator()
 	# Smart tænkt Mikkel!
 	money_label.text = TaxForm._kr(money)
@@ -75,7 +80,21 @@ func finish_sprint() -> void:
 	else:
 		quota_label.text = "Quota not reached!?"
 		quota_label.show()
-	return
+		game_over()
+
+func game_over() -> void:
+	move_child(game_over_screen, -1)
+	game_over_label.text = "You're fired"
+	game_over_sub_label.text = "The firing squad is coming for you"
+	red_tint.size = get_viewport_rect().size
+
+	game_over_screen.show()
+	retry_button.show()
+	await get_tree().process_frame
+
+	var center := get_viewport_rect().size / 2
+	game_over_label.position = center - game_over_label.size / 2
+	retry_button.position = Vector2(center.x - retry_button.size.x / 2, center.y + 125)
 
 func remove_customer() -> void:
 	if current_customer == null:
