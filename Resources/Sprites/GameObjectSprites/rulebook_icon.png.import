@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://p777wphvaou0"
-path="res://.godot/imported/rulebook_04_paa_blanket.png-b095e84c6148dbcf0f140518b178abda.ctex"
+uid="uid://c42fmksjpqo7h"
+path="res://.godot/imported/rulebook_icon.png-25c5ccae34c1b54adf8666c5f0a0edc3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://!DEBUG/Screenshots/rulebook_04_paa_blanket.png"
-dest_files=["res://.godot/imported/rulebook_04_paa_blanket.png-b095e84c6148dbcf0f140518b178abda.ctex"]
+source_file="res://Resources/Sprites/GameObjectSprites/rulebook_icon.png"
+dest_files=["res://.godot/imported/rulebook_icon.png-25c5ccae34c1b54adf8666c5f0a0edc3.ctex"]
 
 [params]
 

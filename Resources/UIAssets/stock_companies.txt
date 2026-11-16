@@ -1,0 +1,27 @@
+[COMPANIES]
+Novo Nordisk
+Mærsk
+Carlsberg
+Vestas
+Danske Bank
+Ørsted
+Pandora
+DSV
+Apple
+Microsoft
+Tesla
+Nvidia
+Amazon
+Alphabet
+Meta
+Netflix
+Coca-Cola
+Nike
+Disney
+Toyota
+Samsung
+Spotify
+Volkswagen
+McDonald's
+Sony
+Nintendo

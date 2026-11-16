@@ -1,6 +1,17 @@
+<<<<<<< HEAD
 .godot/
 /android/
 
 CLAUDE.md
 .claude/settings.local.json
 !DEBUG/Screenshots/
+=======
+# Godot 4+ specific ignores
+.godot/
+/android/
+CLAUDE.md
+
+# Claude Code (personlige indstillinger) og test-screenshots
+.claude/settings.local.json
+\!DEBUG/Screenshots/
+>>>>>>> b945ebec26f7366f7f0753574d2b7f565a9fb38f

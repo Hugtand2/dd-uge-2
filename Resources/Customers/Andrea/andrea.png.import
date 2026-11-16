@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnaw4wrkctfjh"
-path="res://.godot/imported/rulebook_02_side.png-8dab604253900c34b79d6661f09911aa.ctex"
+uid="uid://ccblneay2f56k"
+path="res://.godot/imported/andrea.png-19f3cb37902a66a97bb575f871c22f01.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://!DEBUG/Screenshots/rulebook_02_side.png"
-dest_files=["res://.godot/imported/rulebook_02_side.png-8dab604253900c34b79d6661f09911aa.ctex"]
+source_file="res://Resources/Customers/Andrea/andrea.png"
+dest_files=["res://.godot/imported/andrea.png-19f3cb37902a66a97bb575f871c22f01.ctex"]
 
 [params]
 

@@ -3,9 +3,11 @@ extends Node2D
 # Default pay, that can be deviated from
 const MAXPAYMENT = 20
 const CALCULATOR_SCENE := preload("res://Addons/Calculator/Resources/scenes/calculator.tscn")
+const RULEBOOK := preload("res://Scenes&Scripts/InteractiveScenes/rulebook.tscn")
 
 @onready var desk := $Desk
 @onready var money_label := $MoneyLabel
+@onready var quota_label := $QuotaLabel
 
 var current_customer: Customer
 var is_serving := false
@@ -14,13 +16,24 @@ var payment_guess: float
 var paper_types := Weighted_Array.new()
 var current_paper: Board
 
+var sprint_quota := 50.00
+var served_during_sprint := 0
+var sprint_size := 3
+var sprint_money := 0.00
+
 
 func _ready() -> void:
 	# Decide paper_types and probability distrubution of them
 	paper_types.add(A_Indkomst, 1.0)
+	paper_types.add(Aktieindkomst, 0.5)
 	spawn_calculator()
+	# Smart tænkt Mikkel!
 	money_label.text = TaxForm._kr(money)
-
+	
+	# spawn rulebook
+	var rulebook := RULEBOOK.instantiate()
+	desk.place_board(rulebook, Vector2(200, 30))
+	
 func customer_arrive() -> void:
 	if current_customer:
 		return
@@ -44,11 +57,24 @@ func customer_leave() -> void:
 	if not current_customer:
 		return
 	is_serving = false
+	served_during_sprint += 1
 	############################################################################
 	# Insert animation
 	############################################################################
 	remove_customer()
-	pass
+	if served_during_sprint >= sprint_size: finish_sprint()
+
+func finish_sprint() -> void:
+	# If quota reached
+	if sprint_money >= sprint_quota:
+		quota_label.text = "Quota reached!"
+		quota_label.show()
+	
+	# If quota not reached
+	else:
+		quota_label.text = "Quota not reached!?"
+		quota_label.show()
+	return
 
 func remove_customer() -> void:
 	if current_customer == null:
@@ -56,6 +82,14 @@ func remove_customer() -> void:
 	current_customer.queue_free()
 	current_customer = null
 	is_serving = false
+
+# Fjern blanketten, når kunden har fået den tilbage
+func remove_paper() -> void:
+	if current_paper == null:
+		return
+	current_paper.set_enabled(false) # skjul, fjern clips og tag den ud af "boards"
+	current_paper.queue_free()
+	current_paper = null
 
 func _on_customer_finished_speaking() -> void:
 	current_paper = paper_types.pick_weighted_random().new()
@@ -65,6 +99,7 @@ func _on_customer_board_received(_board: Board = null) -> void:
 	print("Paper given")
 	payment_guess = TaxForm._parse_kr(current_paper.answer_field.text)
 	get_payout()
+	remove_paper()
 	customer_leave()
 
 func get_payout() -> void:
@@ -79,18 +114,20 @@ func get_payout() -> void:
 	var payout = (2 * pow(1.0/2, pow(d_payment/(actual_payment * 0.1), 2)) - 1) * MAXPAYMENT
 	if d_payment == 0: payout *= 1.25
 	money += payout
+	sprint_money += payout
 	
 	AudioPlayer.play_sound_effect("res://Resources/Audio/SoundEffects/AnimationSoundEffects/money.mp3")
 	money_label.text = TaxForm._kr(money)
 
 func spawn_calculator() -> void:
 	var calc = CALCULATOR_SCENE.instantiate() as Board
-	desk.place_board(calc)
+	desk.place_board(calc, Vector2(-200, -50))
 
 # Test function
 func _input(event: InputEvent) -> void:
 	if not current_paper: return
 	if event.is_action_pressed("Test"):
+		finish_sprint()
 		get_viewport().set_input_as_handled() # Skriv ikke "å" i svarfeltet
 		print("%s: korrekt %s, svar \"%s\", forskel %s" % [
 			current_paper.get_form_title(),

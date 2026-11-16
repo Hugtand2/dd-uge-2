@@ -31,12 +31,12 @@ func _init(new_name: String, sprite_path: String = "") -> void:
 	data = file.get_as_text().split("\n")
 	customer_data = CustomerData.new(data)
 	sprite = Sprite2D.new()
+	sprite.scale = Vector2(7,7)
 	if sprite_path != "":
 		sprite.texture = load(sprite_path)
 	else:
-		sprite.texture = load("res://Resources/Customers/" + new_name + "/" + new_name.to_lower() + ".jpg")
+		sprite.texture = load("res://Resources/Customers/" + new_name + "/" + new_name.to_lower() + ".png")
 	add_child(sprite)
-	
 
 func want_to_speak() -> void:
 	# Add sprite to scenetree
@@ -89,8 +89,12 @@ func get_global_rect() -> Rect2:
 	return Rect2(sprite.global_position + r.position * s, r.size * s)
 
 func board_dropped(board: Board, point: Vector2) -> void:
-	if get_global_rect().has_point(point) and board.answer_field.text != "":
-		board_received.emit(board)
+	# Kun blanketter kan afleveres. Lommeregner, regelbog osv. har intet svarfelt.
+	var form := board as TaxForm
+	if form == null:
+		return
+	if get_global_rect().has_point(point) and form.answer_field.text.strip_edges() != "":
+		board_received.emit(form)
 
 static func get_customer_names() -> PackedStringArray:
 	var names := PackedStringArray()

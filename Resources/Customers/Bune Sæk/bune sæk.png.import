@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b305vqwx3h1sf"
-path="res://.godot/imported/rulebook_01_start.png-e4ead0896c6ea5596324eb776f894e07.ctex"
+uid="uid://dpwkpidmod6xl"
+path="res://.godot/imported/bune sæk.png-3826bc955c5100a810462bfe1ca15e0e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://!DEBUG/Screenshots/rulebook_01_start.png"
-dest_files=["res://.godot/imported/rulebook_01_start.png-e4ead0896c6ea5596324eb776f894e07.ctex"]
+source_file="res://Resources/Customers/Bune Sæk/bune sæk.png"
+dest_files=["res://.godot/imported/bune sæk.png-3826bc955c5100a810462bfe1ca15e0e.ctex"]
 
 [params]
 

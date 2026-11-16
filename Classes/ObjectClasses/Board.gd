@@ -163,6 +163,36 @@ func _make_label(text: String, font_size: int = FONT_SIZE) -> Label:
 	label.add_theme_font_size_override("font_size", font_size)
 	return label
 
+# Slå et board helt til eller fra. Et slukket board er usynligt, kan ikke
+# klikkes eller trækkes og clipper ikke til andre boards.
+# Kald den først, når boardet er i scenetræet (_ready slår det til igen).
+func set_enabled(enabled: bool) -> void:
+	visible = enabled
+	set_process_input(enabled)
+	if enabled:
+		add_to_group("boards")
+	else:
+		dragging = false
+		pressed_on_me = false
+		for other in clipped.duplicate():
+			unclip(other)
+		remove_from_group("boards")
+
+# Byt dette board ud med et andet (samme parent): det andet overtager plads,
+# lag og clips, og dette board slås fra.
+# Bruges fx når regelbogen bladrer til en side og tilbage igen.
+func replace_with(other: Board) -> void:
+	var neighbours := clipped.duplicate()
+	other.global_position = global_position
+	set_enabled(false)
+	other.set_enabled(true)
+	if other.get_parent() == get_parent():
+		# Læg det andet board lige oven på dette i tegne-rækkefølgen
+		var target := get_index() if other.get_index() < get_index() else get_index() + 1
+		get_parent().move_child(other, target)
+	for neighbour in neighbours:
+		other.clip(neighbour)
+
 func clip(other: Board) -> void:
 	if other == self or other in clipped:
 		return
@@ -240,6 +270,10 @@ func set_icon_mode(on: bool) -> void:
 	sprite.visible = not on
 	if icon_sprite:
 		icon_sprite.visible = on
+	# Som ikon vises kun ikonet: skjul alt andet indhold (tekst, felter, knapper)
+	for child in get_children():
+		if child != sprite and child != icon_sprite and child is CanvasItem:
+			child.visible = not on
 	size = icon_size if on else full_size
 	global_position = center - size / 2.0
 
@@ -249,11 +283,9 @@ func _update_icon_mode(mouse: Vector2) -> void:
 	var over_desk := _is_point_over_desk(mouse)
 	if over_desk and not is_icon:
 		set_icon_mode(true)
-		get_child(2).hide()
 		global_position = mouse - size / 2.0     # icon centered on the cursor
 	elif not over_desk and is_icon:
 		set_icon_mode(false)
-		get_child(2).show()
 		global_position = mouse - size / 2.0     # full board centered on the cursor
 	else:
 		return
