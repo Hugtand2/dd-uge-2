@@ -109,8 +109,14 @@ func finish_sprint() -> void:
 
 func complete_quota() -> void:
 	quota_label.text = "Quota reached!"
+	quota_label.scale = Vector2.ONE
 	quota_label.show()
 	await Tweens.wobble(quota_label)
+	await get_tree().create_timer(1).timeout
+	
+	var tween := get_tree().create_tween()
+	tween.tween_property(quota_label, "scale", Vector2.ZERO, 1.0).set_ease(Tween.EASE_IN)
+	await tween.finished
 	quota_label.hide()
 
 func game_over() -> void:
