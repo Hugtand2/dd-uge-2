@@ -20,6 +20,7 @@ config/icon="uid://brq1481fdqylt"
 AudioPlayer="*uid://cedj0ccwfh1bx"
 DialogueBox="*uid://c5bfgciv7shja"
 DialogueText="*uid://w2hotu47yl0l"
+Global="*uid://bdxjr2itu71ug"
 
 [display]
 

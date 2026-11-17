@@ -55,6 +55,7 @@ func _ready() -> void:
 		get_child(2).hide()
 
 func _input(event: InputEvent) -> void:
+	if Global.game_over: return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			var mouse := get_global_mouse_position()

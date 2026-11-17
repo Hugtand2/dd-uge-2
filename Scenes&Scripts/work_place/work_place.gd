@@ -15,6 +15,10 @@ const WELCOME_LETTER := "res://Resources/Letters/welcome_letter.txt"
 @onready var red_tint := $GameOverScreen/RedTint
 @onready var retry_button := $GameOverScreen/RetryButton
 
+# For layout setup:
+@onready var left_wall := $Frame/LeftWall
+@onready var right_wall := $Frame/RightWall
+
 var current_customer: Customer
 var is_serving := false
 var money := 0.00
@@ -29,14 +33,30 @@ var sprint_money := 0.00
 
 
 func _ready() -> void:
-	# Decide paper_types and probability distrubution of them
+	setup_paper_types()
+	setup_layout()
+	setup_desk()
+	money_label.text = TaxForm._kr(money)
+	Global.game_over = false
+
+func setup_paper_types() -> void:
 	paper_types.add(A_Indkomst, 2.0)
 	paper_types.add(Aktieindkomst, 1.0)
 	paper_types.add(Ejendomsværdiskat, 1.0)
 	spawn_calculator()
-	# Smart tænkt Mikkel!
-	money_label.text = TaxForm._kr(money)
-	
+
+func setup_layout() -> void:
+	var viewport_size := get_viewport_rect().size
+	var wall_size := Vector2(viewport_size.x * 3 / 10.0, viewport_size.y)
+
+	for wall in [left_wall, right_wall]:
+		wall.centered = false      # så position er øverste venstre hjørne
+		set_sprite_size(wall, wall_size)
+
+	left_wall.position = Vector2.ZERO
+	right_wall.position = Vector2(viewport_size.x - wall_size.x, 0)
+
+func setup_desk() -> void:
 	# spawn rulebook
 	var rulebook := RULEBOOK.instantiate()
 	desk.place_board(rulebook, Vector2(200, 30))
@@ -90,6 +110,7 @@ func finish_sprint() -> void:
 		game_over()
 
 func game_over() -> void:
+	Global.game_over = true
 	quota_label.text = "Quota not reached!?"
 	quota_label.show()
 	
@@ -124,6 +145,7 @@ func game_over() -> void:
 	
 	await bounce.finished
 	retry_button.disabled = false
+	
 
 func remove_customer() -> void:
 	if current_customer == null:
@@ -171,6 +193,16 @@ func get_payout() -> void:
 func spawn_calculator() -> void:
 	var calc = CALCULATOR_SCENE.instantiate() as Board
 	desk.place_board(calc, Vector2(-200, -50))
+
+# For setup
+func set_sprite_size(sprite: Sprite2D, target_size: Vector2) -> void:
+	if not sprite.texture:
+		return
+		
+	var texture_size: Vector2 = sprite.texture.get_size()
+	
+	# Calculate the ratio needed to reach the target pixel dimensions
+	sprite.scale = target_size / texture_size
 
 # Test function
 func _input(event: InputEvent) -> void:
