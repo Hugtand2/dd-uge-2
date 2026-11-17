@@ -46,9 +46,14 @@ offset_bottom = 103.0
 theme_override_font_sizes/font_size = 45
 text = "0 kr"
 
+[node name="SprintLabel" type="Label" parent="." unique_id=1319731682]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Test"
+
 [node name="QuotaLabel" type="Label" parent="." unique_id=851899107]
 visible = false
-custom_maximum_size = Vector2(446, 219)
+custom_maximum_size = Vector2(446, 400)
 offset_left = 343.0
 offset_top = 55.0
 offset_right = 789.0
