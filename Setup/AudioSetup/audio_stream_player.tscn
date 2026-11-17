@@ -8,5 +8,3 @@ script = ExtResource("1_e2cgn")
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=2026208481]
 script = ExtResource("2_iq33y")
-
-[node name="SoundEffectPlayer" type="AudioStreamPlayer" parent="." unique_id=1410585934]
