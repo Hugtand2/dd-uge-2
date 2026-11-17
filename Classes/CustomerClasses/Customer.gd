@@ -53,6 +53,7 @@ func want_to_speak() -> void:
 func speak() -> void:
 	if not can_interact or has_spoken:
 		return
+	Tweens.bob(self)
 	text_bubble_dots.hide()
 	var section := customer_data.read_section("[DIALOGUE]")
 	if section.is_empty():
