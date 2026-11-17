@@ -7,6 +7,7 @@ func _ready() -> void:
 
 func _pressed() -> void:
 	AudioPlayer.play_sound_effect("res://Resources/Audio/SoundEffects/GameObjectSoundEffects/bell_ring.mp3")
+	Tweens.wobble(self)
 	if get_parent().is_serving:
 		return
 	get_parent().customer_arrive()

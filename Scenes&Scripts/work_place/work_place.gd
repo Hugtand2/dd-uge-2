@@ -102,12 +102,16 @@ func customer_leave() -> void:
 func finish_sprint() -> void:
 	# If quota reached
 	if sprint_money >= sprint_quota:
-		quota_label.text = "Quota reached!"
-		quota_label.show()
-	
+		complete_quota()
 	# If quota not reached
 	else:
 		game_over()
+
+func complete_quota() -> void:
+	quota_label.text = "Quota reached!"
+	quota_label.show()
+	await Tweens.wobble(quota_label)
+	quota_label.hide()
 
 func game_over() -> void:
 	Global.game_over = true
@@ -189,6 +193,7 @@ func get_payout() -> void:
 	
 	AudioPlayer.play_sound_effect("res://Resources/Audio/SoundEffects/AnimationSoundEffects/money.mp3")
 	money_label.text = TaxForm._kr(money)
+	Tweens.wobble(money_label)
 
 func spawn_calculator() -> void:
 	var calc = CALCULATOR_SCENE.instantiate() as Board
@@ -208,7 +213,7 @@ func set_sprite_size(sprite: Sprite2D, target_size: Vector2) -> void:
 func _input(event: InputEvent) -> void:
 	if not current_paper: return
 	if event.is_action_pressed("Test"):
-		finish_sprint()
+		complete_quota()
 		get_viewport().set_input_as_handled() # Skriv ikke "å" i svarfeltet
 		print("%s: korrekt %s, svar \"%s\", forskel %s" % [
 			current_paper.get_form_title(),
