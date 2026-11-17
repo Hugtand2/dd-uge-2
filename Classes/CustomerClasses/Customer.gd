@@ -32,7 +32,7 @@ func _init(new_name: String, sprite_path: String = "") -> void:
 	data = file.get_as_text().split("\n")
 	customer_data = CustomerData.new(data)
 	sprite = Sprite2D.new()
-	sprite.scale = Vector2(7,7)
+	sprite.scale = Vector2.ONE * Global.PIXEL_SCALE
 	if sprite_path != "":
 		sprite.texture = load(sprite_path)
 	else:
