@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="DDUge2Game"
-run/main_scene="uid://c68ilnrn3gf8y"
+run/main_scene="uid://cxftbpdnvtbgb"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="uid://brq1481fdqylt"
 
@@ -20,11 +20,16 @@ config/icon="uid://brq1481fdqylt"
 AudioPlayer="*uid://cedj0ccwfh1bx"
 DialogueBox="*uid://c5bfgciv7shja"
 DialogueText="*uid://w2hotu47yl0l"
+Supabase="*uid://cdyoe67t7a0fm"
 
 [display]
 
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://Addons/supabase/plugin.cfg")
 
 [file_customization]
 
