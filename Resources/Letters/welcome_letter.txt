@@ -11,6 +11,8 @@ Kig i bogen for at læse mere om specifikke skatter.
  
 Ring med klokken, når du er klar til den første kunde.
  
+Når du har udfyldt blanketten, skal du drag-og-drop den til kunden.
+
 Hvis du ikke gør dit arbejde ordentligt,
 så kommer "The firing squad" og fyrer dig.
 

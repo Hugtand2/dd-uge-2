@@ -11,6 +11,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -1031.0
+offset_bottom = -546.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pftxu")
@@ -32,3 +34,44 @@ texture_hover = ExtResource("3_pftxu")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1254674282]
 position = Vector2(958, 539)
 zoom = Vector2(0.601, 0.601)
+
+[node name="VolumeLayer" type="CanvasLayer" parent="." unique_id=616100176]
+
+[node name="VolumeGrid" type="GridContainer" parent="VolumeLayer" unique_id=169071070]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -70.0
+offset_right = 344.0
+offset_bottom = -16.0
+grow_vertical = 0
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="MusicLabel" type="Label" parent="VolumeLayer/VolumeGrid" unique_id=2060531994]
+layout_mode = 2
+text = "Musik"
+
+[node name="MusicSlider" type="HSlider" parent="VolumeLayer/VolumeGrid" unique_id=1136815184]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SfxLabel" type="Label" parent="VolumeLayer/VolumeGrid" unique_id=1118965502]
+layout_mode = 2
+text = "Lydeffekter"
+
+[node name="SfxSlider" type="HSlider" parent="VolumeLayer/VolumeGrid" unique_id=1473058035]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 1.0
