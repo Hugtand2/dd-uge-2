@@ -91,6 +91,9 @@ static func _progressive_tax(grundlag: float, periods: int = 12) -> float:
 
 # Formatér beløb på dansk, fx 30.000,00 kr
 static func _kr(value: float) -> String:
+	if not is_finite(value): # NaN/INF har intet decimalpunktum -> parts[1] findes ikke
+		push_error("_kr fik et ugyldigt beløb: %s" % value)
+		return "??? kr"
 	var parts := ("%.2f" % absf(value)).split(".")
 	var whole := parts[0]
 	var out := ""

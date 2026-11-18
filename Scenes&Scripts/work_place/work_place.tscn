@@ -4,12 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://jgva0pjpv0ps" path="res://Scenes&Scripts/GameObjects/desk/desk.tscn" id="2_tug3r"]
 [ext_resource type="Texture2D" uid="uid://catdmr57c2l5c" path="res://Resources/Sprites/GameObjectSprites/bell.png" id="3_tug3r"]
 [ext_resource type="Script" uid="uid://c4j6svabuvf70" path="res://Scenes&Scripts/GameObjects/bell/bell.gd" id="3_xrtsr"]
+[ext_resource type="Texture2D" uid="uid://b4uhrwtl44lqn" path="res://Resources/UIAssets/sider2.png" id="5_6c7u1"]
 [ext_resource type="Script" uid="uid://n7m0ptj4wso2" path="res://Scenes&Scripts/work_place/retry_button.gd" id="5_xrtsr"]
-
-[sub_resource type="Gradient" id="Gradient_6c7u1"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_v1nc2"]
-gradient = SubResource("Gradient_6c7u1")
 
 [node name="WorkPlace" type="Node2D" unique_id=1718905792]
 script = ExtResource("1_nsi5y")
@@ -33,14 +29,14 @@ script = ExtResource("3_xrtsr")
 [node name="Frame" type="Node2D" parent="." unique_id=364179705]
 
 [node name="LeftWall" type="Sprite2D" parent="Frame" unique_id=237228833]
-position = Vector2(160.125, 322.625)
-scale = Vector2(4.9960938, 10.167969)
-texture = SubResource("GradientTexture2D_v1nc2")
+position = Vector2(156.5, 324)
+scale = Vector2(0.978125, 1.0125)
+texture = ExtResource("5_6c7u1")
 
 [node name="RightWall" type="Sprite2D" parent="Frame" unique_id=85458382]
-position = Vector2(984.3086, 324)
-scale = Vector2(5.2908945, 10.334437)
-texture = SubResource("GradientTexture2D_v1nc2")
+position = Vector2(985.5, 324)
+scale = Vector2(1.0406249, 1.0125)
+texture = ExtResource("5_6c7u1")
 
 [node name="MoneyLabel" type="Label" parent="." unique_id=1569045314]
 offset_left = 832.0

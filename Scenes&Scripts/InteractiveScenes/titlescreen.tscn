@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://cxftbpdnvtbgb"]
+
+[ext_resource type="Texture2D" uid="uid://c7t3xlhqjjflg" path="res://Resources/UIAssets/titlescreen.jpg" id="1_6c5c1"]
+[ext_resource type="Texture2D" uid="uid://dcwogk5bve4o8" path="res://Resources/UIAssets/PlayButton/PlayButton.png" id="1_khqc7"]
+[ext_resource type="Script" uid="uid://8i6oes26jd4j" path="res://Scenes&Scripts/InteractiveScenes/titlescreen.gd" id="1_pftxu"]
+[ext_resource type="Texture2D" uid="uid://bseyoabs418ph" path="res://Resources/UIAssets/PlayButton/Clickbutton.png" id="2_6c5c1"]
+[ext_resource type="Texture2D" uid="uid://diwe78bo1qlt4" path="res://Resources/UIAssets/PlayButton/PlayButtonHover.png" id="3_pftxu"]
+
+[node name="Control" type="Control" unique_id=1686155103]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pftxu")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=58332214]
+position = Vector2(960, 540)
+texture = ExtResource("1_6c5c1")
+
+[node name="MainMenuPlayButton" type="TextureButton" parent="." unique_id=1993455512]
+layout_mode = 0
+offset_left = 651.0
+offset_top = 136.0
+offset_right = 1291.0
+offset_bottom = 356.0
+texture_normal = ExtResource("1_khqc7")
+texture_pressed = ExtResource("2_6c5c1")
+texture_hover = ExtResource("3_pftxu")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1254674282]
+position = Vector2(958, 539)
+zoom = Vector2(0.601, 0.601)
