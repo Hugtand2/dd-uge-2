@@ -1,4 +1,5 @@
 extends Node
+# Autoload
 
 # Global constants
 const PIXEL_SCALE := 6.0
@@ -17,3 +18,5 @@ func _ready() -> void:
 
 func is_logged_in() -> bool:
 	return not current_user.is_empty()
+	
+var money := 0.00
