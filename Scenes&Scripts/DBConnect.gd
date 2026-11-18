@@ -23,7 +23,7 @@ func select_users() -> void:
 	print("Query succeeded!")
 	if task.data is Array and not task.data.is_empty():
 		print(task.data[0])
-	else:
+	else: 
 		print("no rows")
 	# Testing
 	print(typeof(task.data[0]))
