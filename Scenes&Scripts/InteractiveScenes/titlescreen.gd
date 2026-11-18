@@ -3,10 +3,17 @@ extends Control
 @onready var play_button: TextureButton = $MainMenuPlayButton
 @onready var music_slider: HSlider = %MusicSlider
 @onready var sfx_slider: HSlider = %SfxSlider
+@onready var login_button: Button = $MainMenuLoginButton
+@onready var login_status_label: Label = %LoginStatusLabel
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	play_button.pressed.connect(button_pressed)
+	login_button.pressed.connect(_on_login_pressed)
+	if Global.is_logged_in():
+		login_status_label.text = "Logget ind som %s" % Global.current_user["user_name"]
+	else:
+		login_status_label.text = "Ikke logget ind"
 	AudioPlayer.play_custom_track("res://Resources/Audio/Music/Theme For Ernie (Remastered 2026) (320kbps).mp3")
 
 	# Vis den gemte lydstyrke (sættes før connect, så den ikke kalder set_..._volume igen)
@@ -28,3 +35,7 @@ func _on_sfx_slider_released(_changed: bool) -> void:
 
 func button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes&Scripts/main/main.tscn")
+
+
+func _on_login_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes&Scripts/InteractiveScenes/login.tscn")
