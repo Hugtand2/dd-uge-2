@@ -5,12 +5,14 @@ const MAXPAYMENT = 20
 const CALCULATOR_SCENE := preload("res://Addons/Calculator/Resources/scenes/calculator.tscn")
 const RULEBOOK := preload("res://Scenes&Scripts/InteractiveScenes/rulebook.tscn")
 const WELCOME_LETTER := "res://Resources/Letters/welcome_letter.txt"
-const FIRST_SPRINT_QUOTA := 20.00
+const FIRST_SPRINT_QUOTA := 40.00
+const RAMP := 1.0
 
 @onready var desk := $Desk
-@onready var money_label := $MoneyLabel
-@onready var quota_label := $QuotaLabel
+@onready var quota_label := $PopupLabel
 @onready var sprint_label := $SprintLabel
+@onready var sprint_money_label := $SprintMoneyLabel
+@onready var money_popup_label := $MoneyPopupLabel
 
 @onready var game_over_screen := $GameOverScreen
 @onready var game_over_label := $GameOverScreen/GameOverLabel
@@ -24,12 +26,12 @@ const FIRST_SPRINT_QUOTA := 20.00
 
 var current_customer: Customer
 var is_serving := false
-var money := 0.00
 var payment_guess: float
 var paper_types := Weighted_Array.new()
 var current_paper: Board
 
 var sprint_quota := FIRST_SPRINT_QUOTA
+var quotas_served := 0
 var served_during_sprint := 0
 var sprint_size := 3
 var first_sprint_size := 3
@@ -60,11 +62,11 @@ func setup_layout() -> void:
 	left_wall.position = Vector2.ZERO
 	right_wall.position = Vector2(viewport_size.x - wall_size.x, 0)
 
-	money_label.text = TaxForm._kr(money)
-	money_label.position = Vector2(right_wall.position.x + 20, 20)
+	sprint_money_label.text = TaxForm._kr(sprint_money)
+	sprint_money_label.position = Vector2(right_wall.position.x + 20, 20)
 	sprint_label.text = "%s/%s customers served. Quota: %s" \
 		% [served_during_sprint, sprint_size, sprint_quota]
-	sprint_label.position = money_label.position + Vector2(0, money_label.size.y - 30)
+	sprint_label.position = sprint_money_label.position + Vector2(0, sprint_money_label.size.y - 30)
 
 func setup_desk() -> void:
 	# spawn rulebook
@@ -124,22 +126,50 @@ func complete_quota() -> void:
 	quota_label.text = "Quota reached!"
 	quota_label.scale = Vector2.ONE
 	quota_label.show()
-	await Tweens.wobble(quota_label)
-	await get_tree().create_timer(1).timeout
+	Tweens.wobble(quota_label)
+	save_money()
+	await get_tree().create_timer(2).timeout
 	var tween := get_tree().create_tween()
 	tween.tween_property(quota_label, "scale", Vector2.ZERO, 1.0).set_ease(Tween.EASE_IN)
+	
+	
 	await tween.finished
 	quota_label.hide()
 	
+	quotas_served += 1
 	start_new_sprint()
+
+func save_money() -> void:
+	var surplus = sprint_money - sprint_quota
+	Global.money += surplus
+	sprint_money = 0.00
+	print(Global.money)
+	
+	# Animation
+	money_popup_label.text = "+%s" % surplus
+	show_earned_money()
+
+func show_earned_money() -> void:
+	var start_pos = sprint_money_label.position + Vector2(0, sprint_money_label.get_line_height() - 20)
+	
+	money_popup_label.show()
+	Tweens.wobble(money_popup_label)
+	var tween = get_tree().create_tween()
+	tween.tween_property(money_popup_label, "position", start_pos + Vector2(0,20), 2) \
+		.from(start_pos) \
+		.set_ease(Tween.EASE_OUT)
+	money_popup_label.modulate.a = 1.0
+	Tweens.fade(money_popup_label,2,0)
+	
+	await tween.finished
+	money_popup_label.hide()
 
 func get_sprint_quota(n: int) -> float:
 	var n0 := float(first_sprint_size)
-	var slope := MAXPAYMENT * 1.25 * 0.5 
+	var slope := MAXPAYMENT * 1.25 * RAMP 
 	return FIRST_SPRINT_QUOTA + slope * (n - n0) * (1.0 - n0 / n)
 
 func start_new_sprint() -> void:
-	sprint_money = 0.00
 	sprint_size += 1
 	sprint_quota = snappedf(get_sprint_quota(sprint_size), 0.01)
 	served_during_sprint = 0
@@ -221,12 +251,19 @@ func get_payout() -> void:
 	# If d_payment >= actual_payment * 0.1, it asymptotically returns MAXPAY * (-1)
 	var payout = (2 * pow(1.0/2, pow(d_payment/(actual_payment * 0.1), 2)) - 1) * MAXPAYMENT
 	if d_payment == 0: payout *= 1.25
-	money += payout
 	sprint_money += payout
 	
 	AudioPlayer.play_sound_effect("res://Resources/Audio/SoundEffects/AnimationSoundEffects/money.mp3")
-	money_label.text = TaxForm._kr(money)
-	Tweens.wobble(money_label)
+	sprint_money_label.text = TaxForm._kr(sprint_money)
+	Tweens.wobble(sprint_money_label)
+	
+	if payout >= 0:
+		money_popup_label.text = "+%s kr" % payout
+		set("theme_override_colors/font_color", Color.hex(0x40d85a))
+	else:
+		money_popup_label.text = "%s kr" % payout
+		set("theme_override_colors/font_color", Color.hex(0xfe0023))
+	show_earned_money()
 
 func spawn_calculator() -> void:
 	var calc = CALCULATOR_SCENE.instantiate() as Board
