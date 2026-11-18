@@ -38,7 +38,12 @@ position = Vector2(172, 321)
 scale = Vector2(2.0937498, 2.0374997)
 texture = ExtResource("5_6c7u1")
 
-[node name="MoneyLabel" type="Label" parent="." unique_id=1569045314]
+[node name="SprintLabel" type="Label" parent="." unique_id=1319731682]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Test"
+
+[node name="SprintMoneyLabel" type="Label" parent="." unique_id=1569045314]
 offset_left = 832.0
 offset_top = 9.0
 offset_right = 980.0
@@ -46,9 +51,16 @@ offset_bottom = 103.0
 theme_override_font_sizes/font_size = 45
 text = "0 kr"
 
-[node name="SprintLabel" type="Label" parent="." unique_id=1319731682]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="MoneyPopupLabel" type="Label" parent="." unique_id=1977316702]
+visible = false
+offset_left = 832.0
+offset_top = 9.0
+offset_right = 923.0
+offset_bottom = 72.0
+theme_override_colors/font_color = Color(0.9941569, 0, 0.13816798, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 45
 text = "Test"
 
 [node name="QuotaLabel" type="Label" parent="." unique_id=851899107]

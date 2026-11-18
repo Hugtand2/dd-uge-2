@@ -1,4 +1,5 @@
 extends Node
+# Autoload
 
 func wobble(node: CanvasItem) -> void:
 	_kill(node, "_rot_tween")
@@ -28,6 +29,9 @@ func bob(node: CanvasItem) -> Tween:
 	tween.tween_property(node, "position", base_pos, 0.45) \
 		.set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 	return tween
+func fade(node: CanvasItem, period) -> void:
+	var tween := node.create_tween()
+	tween.tween_property(node, "modulate", Color(1,0.0), period)
 
 
 func _kill(node: CanvasItem, key: String) -> void:
