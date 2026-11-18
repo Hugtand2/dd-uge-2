@@ -29,9 +29,10 @@ func bob(node: CanvasItem) -> Tween:
 	tween.tween_property(node, "position", base_pos, 0.45) \
 		.set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 	return tween
-func fade(node: CanvasItem, period) -> void:
+func fade(node: CanvasItem, period: float, to_alpha := 0.0) -> Tween:
 	var tween := node.create_tween()
-	tween.tween_property(node, "modulate", Color(1,0.0), period)
+	tween.tween_property(node, "modulate:a", to_alpha, period)
+	return tween
 
 
 func _kill(node: CanvasItem, key: String) -> void:

@@ -9,7 +9,7 @@ const FIRST_SPRINT_QUOTA := 40.00
 const RAMP := 1.0
 
 @onready var desk := $Desk
-@onready var quota_label := $QuotaLabel
+@onready var quota_label := $PopupLabel
 @onready var sprint_label := $SprintLabel
 @onready var sprint_money_label := $SprintMoneyLabel
 @onready var money_popup_label := $MoneyPopupLabel
@@ -31,6 +31,7 @@ var paper_types := Weighted_Array.new()
 var current_paper: Board
 
 var sprint_quota := FIRST_SPRINT_QUOTA
+var quotas_served := 0
 var served_during_sprint := 0
 var sprint_size := 3
 var first_sprint_size := 3
@@ -135,6 +136,7 @@ func complete_quota() -> void:
 	await tween.finished
 	quota_label.hide()
 	
+	quotas_served += 1
 	start_new_sprint()
 
 func save_money() -> void:
@@ -156,7 +158,8 @@ func show_earned_money() -> void:
 	tween.tween_property(money_popup_label, "position", start_pos + Vector2(0,20), 2) \
 		.from(start_pos) \
 		.set_ease(Tween.EASE_OUT)
-	Tweens.fade(money_popup_label, 2)
+	money_popup_label.modulate.a = 1.0
+	Tweens.fade(money_popup_label,2,0)
 	
 	await tween.finished
 	money_popup_label.hide()
