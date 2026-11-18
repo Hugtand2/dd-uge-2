@@ -6,15 +6,22 @@ const EXACT_TOLERANCE := 0.005 # under en halv øre fra det rigtige svar tæller
 const CALCULATOR_SCENE := preload("res://Addons/Calculator/Resources/scenes/calculator.tscn")
 const RULEBOOK := preload("res://Scenes&Scripts/InteractiveScenes/rulebook.tscn")
 const WELCOME_LETTER := "res://Resources/Letters/welcome_letter.txt"
+const FIRST_SPRINT_QUOTA := 20.00
 
 @onready var desk := $Desk
 @onready var money_label := $MoneyLabel
 @onready var quota_label := $QuotaLabel
+@onready var sprint_label := $SprintLabel
+
 @onready var game_over_screen := $GameOverScreen
 @onready var game_over_label := $GameOverScreen/GameOverLabel
 @onready var game_over_sub_label := $GameOverScreen/GameOverLabel/GameOverSubLabel
 @onready var red_tint := $GameOverScreen/RedTint
 @onready var retry_button := $GameOverScreen/RetryButton
+
+# For layout setup:
+@onready var left_wall := $Frame/LeftWall
+@onready var right_wall := $Frame/RightWall
 
 var current_customer: Customer
 var is_serving := false
@@ -23,21 +30,44 @@ var payment_guess: float
 var paper_types := Weighted_Array.new()
 var current_paper: Board
 
-var sprint_quota := 50.00
+var sprint_quota := FIRST_SPRINT_QUOTA
 var served_during_sprint := 0
 var sprint_size := 3
+var first_sprint_size := 3
 var sprint_money := 0.00
 
 
 func _ready() -> void:
-	# Decide paper_types and probability distrubution of them
+	setup_paper_types()
+	setup_layout()
+	setup_desk()
+	
+	Global.game_over = false
+
+func setup_paper_types() -> void:
 	paper_types.add(A_Indkomst, 2.0)
 	paper_types.add(Aktieindkomst, 1.0)
 	paper_types.add(Ejendomsværdiskat, 1.0)
 	spawn_calculator()
-	# Smart tænkt Mikkel!
+
+func setup_layout() -> void:
+	var viewport_size := get_viewport_rect().size
+	var wall_size := Vector2(viewport_size.x * 3 / 10.0, viewport_size.y)
+
+	for wall in [left_wall, right_wall]:
+		wall.centered = false
+		set_sprite_size(wall, wall_size)
+
+	left_wall.position = Vector2.ZERO
+	right_wall.position = Vector2(viewport_size.x - wall_size.x, 0)
+
 	money_label.text = TaxForm._kr(money)
-	
+	money_label.position = Vector2(right_wall.position.x + 20, 20)
+	sprint_label.text = "%s/%s customers served. Quota: %s" \
+		% [served_during_sprint, sprint_size, sprint_quota]
+	sprint_label.position = money_label.position + Vector2(0, money_label.size.y - 30)
+
+func setup_desk() -> void:
 	# spawn rulebook
 	var rulebook := RULEBOOK.instantiate()
 	desk.place_board(rulebook, Vector2(200, 30))
@@ -71,6 +101,8 @@ func customer_leave() -> void:
 		return
 	is_serving = false
 	served_during_sprint += 1
+	sprint_label.text = "%s/%s customers served. Quota: %s" \
+		% [served_during_sprint, sprint_size, sprint_quota]
 	
 	#Tween the customer out
 	var tween = get_tree().create_tween()
@@ -83,16 +115,43 @@ func customer_leave() -> void:
 func finish_sprint() -> void:
 	# If quota reached
 	if sprint_money >= sprint_quota:
-		quota_label.text = "Quota reached!"
-		quota_label.show()
-	
+		complete_quota()
 	# If quota not reached
 	else:
 		game_over()
 
-func game_over() -> void:
-	quota_label.text = "Quota not reached!?"
+func complete_quota() -> void:
+	# Quota animation
+	quota_label.text = "Quota reached!"
+	quota_label.scale = Vector2.ONE
 	quota_label.show()
+	await Tweens.wobble(quota_label)
+	await get_tree().create_timer(1).timeout
+	var tween := get_tree().create_tween()
+	tween.tween_property(quota_label, "scale", Vector2.ZERO, 1.0).set_ease(Tween.EASE_IN)
+	await tween.finished
+	quota_label.hide()
+	
+	start_new_sprint()
+
+func get_sprint_quota(n: int) -> float:
+	var n0 := float(first_sprint_size)
+	var slope := MAXPAYMENT * 1.25 * 0.5 
+	return FIRST_SPRINT_QUOTA + slope * (n - n0) * (1.0 - n0 / n)
+
+func start_new_sprint() -> void:
+	sprint_money = 0.00
+	sprint_size += 1
+	sprint_quota = snappedf(get_sprint_quota(sprint_size), 0.01)
+	served_during_sprint = 0
+	sprint_label.text = "%s/%s customers served. Quota: %s" \
+		% [served_during_sprint, sprint_size, sprint_quota]
+
+func game_over() -> void:
+	Global.game_over = true
+	quota_label.text = "You didn't reach the quota!?"
+	quota_label.show()
+	Tweens.wobble(quota_label)
 	
 	move_child(game_over_screen, -1)
 	game_over_label.text = "You're fired"
@@ -177,16 +236,27 @@ func get_payout() -> void:
 	
 	AudioPlayer.play_sound_effect("res://Resources/Audio/SoundEffects/AnimationSoundEffects/money.mp3")
 	money_label.text = TaxForm._kr(money)
+	Tweens.wobble(money_label)
 
 func spawn_calculator() -> void:
 	var calc = CALCULATOR_SCENE.instantiate() as Board
 	desk.place_board(calc, Vector2(-200, -50))
 
+# For setup
+func set_sprite_size(sprite: Sprite2D, target_size: Vector2) -> void:
+	if not sprite.texture:
+		return
+		
+	var texture_size: Vector2 = sprite.texture.get_size()
+	
+	# Calculate the ratio needed to reach the target pixel dimensions
+	sprite.scale = target_size / texture_size
+
 # Test function
 func _input(event: InputEvent) -> void:
-	if not current_paper: return
 	if event.is_action_pressed("Test"):
-		finish_sprint()
+		complete_quota()
+		if not current_paper: return
 		get_viewport().set_input_as_handled() # Skriv ikke "å" i svarfeltet
 		print("%s: korrekt %s, svar \"%s\", forskel %s" % [
 			current_paper.get_form_title(),
